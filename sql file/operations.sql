@@ -1,0 +1,9 @@
+INSERT INTO `operations` (`id`, `service_id`, `service_provider_id`, `service_user_id`, `address`, `flag`, `description`, `rating_review_id`, `completed_time`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 2, 'Budhabare-2, Ojhasahar, Chitwan 47664', 1, 'Dictumst quisque sagittis purus sit amet. Felis eget velit aliquet sagittis id consectetur purus.', 1, NULL, NULL, NULL),
+(2, 2, 2, 3, 'Thothung-4, Prakritibesi, Lamjung 11498', 0, 'Tristique senectus et netus et malesuada fames ac turpis. Ante metus dictum at tempor commodo ullamcorper. Dictum varius duis at consectetur.', 2, NULL, NULL, NULL),
+(3, 3, 3, 4, 'Tikoli-65, Napitbazaar, Jhapa 96623', 1, 'Dictumst quisque sagittis purus sit amet. Felis eget velit aliquet sagittis id consectetur purus. Nunc sed id semper risus in hendrerit.', 3, NULL, NULL, NULL),
+(4, 4, 4, 5, 'Sitalpati-45, Gyawalisahar, Sindhuli 95353', 0, ' A pellentesque sit amet porttitor eget dolor morbi. Pellentesque habitant morbi tristique senectus.', 4, NULL, NULL, NULL),
+(5, 1, 1, 6, 'Mangri-71, Sahangaun, Gulmi 00277', 0, 'Dictumst quisque sagittis purus sit amet. Felis eget velit aliquet sagittis id consectetur purus. Nunc sed id semper risus in hendrerit.', 1, NULL, NULL, NULL),
+(6, 2, 2, 7, 'Kapilvastu-5, Sumelgaun, Bajhang 47902', 1, ' A pellentesque sit amet porttitor eget dolor morbi. Pellentesque habitant morbi tristique senectus.', 2, NULL, NULL, NULL),
+(7, 3, 3, 8, 'Gogangaon-14, Nirajangaun, Jumla 86211', 0, 'volutpat consequat mauris nunc. Tristique senectus et netus et malesuada fames ac turpis. Ante metus dictum at tempor commodo ullamcorper.', 3, NULL, NULL, NULL),
+(8, 4, 4, 9, 'Munge-6, Golchhatar, Sunsari 72743', 1, 'A pellentesque sit amet porttitor eget dolor morbi. Pellentesque habitant morbi tristique senectus.', 6, NULL, NULL, NULL);
