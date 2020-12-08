@@ -42,4 +42,12 @@ class ServiceUserUpdate extends Controller
         $this->validate($request, $rules);
         DB::table('users')->where('id',$request['id'])->update(['phoneno'=>$request['phoneno']]);
     }
+       public function updateProfilePicture(Request $request)
+    {
+        $rules = [
+            'image' => 'required|image',
+        ];
+        $this->validate($request, $rules);
+        DB::table('users')->where('id',$request['id'])->update(['avatar'=>$request->image->store('','images')]);
+    }
 }

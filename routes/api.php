@@ -44,6 +44,7 @@ Route::post('deleteFavourite','FavouriteCheckerController@deleteFavourite');
 Route::post('fullnameUpdate','ServiceUserUpdate@updateFullName');
 Route::post('addressUpdate','ServiceUserUpdate@updateAddress');
 Route::post('phoneNoUpdate','ServiceUserUpdate@updatePhoneNo');
+Route::post('profileimageupdateUpdate','ServiceUserUpdate@updateProfilePicture');
 Route::post('serviceproviderselectionbydistance','ServiceProviderSelectionController@serviceProviderselectionListByDistance');
 Route::post('serviceselection','ServiceProviderSelectionController@serviceSelectionList');
 });
