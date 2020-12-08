@@ -45,6 +45,7 @@ class ServiceUserUpdate extends Controller
        public function updateProfilePicture(Request $request)
     {
         $rules = [
+            'id' =>'required',
             'image' => 'required|image',
         ];
         $this->validate($request, $rules);
