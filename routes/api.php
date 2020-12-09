@@ -44,8 +44,15 @@ Route::post('deleteFavourite','FavouriteCheckerController@deleteFavourite');
 Route::post('fullnameUpdate','ServiceUserUpdate@updateFullName');
 Route::post('addressUpdate','ServiceUserUpdate@updateAddress');
 Route::post('phoneNoUpdate','ServiceUserUpdate@updatePhoneNo');
-Route::post('profileimageupdateUpdate','ServiceUserUpdate@updateProfilePicture');
+Route::post('profileimageupdate','ServiceUserUpdate@updateProfilePicture');
 Route::post('serviceproviderselectionbydistance','ServiceProviderSelectionController@serviceProviderselectionListByDistance');
 Route::post('serviceselection','ServiceProviderSelectionController@serviceSelectionList');
 });
-Route::resource('admin','AdminController');
+Route::group(['middleware'=>['auth:api','serviceprovider']],function(){
+Route::post('providerongoingtracker','TrackerController@ProviderOngoingTracker');
+Route::post('providercompletedtracker','TrackerController@ProviderCompletedTracker');
+Route::post('bookstatuschanged','StatusChangedController@BookFlagChanged');
+Route::post('ongoingstatuschanged','StatusChangedController@StartFlagChanged');
+Route::post('completedstatuschanged','StatusChangedController@CompletedFlagChanged');
+Route::post('paymentstatuschanged','StatusChangedController@PaymentFlagChanged');
+});

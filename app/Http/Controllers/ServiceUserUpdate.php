@@ -51,4 +51,13 @@ class ServiceUserUpdate extends Controller
         $this->validate($request, $rules);
         DB::table('users')->where('id',$request['id'])->update(['avatar'=>$request->image->store('','images')]);
     }
+            public function updateService(Request $request)
+    {
+        $rules = [
+            'subcategory_id' => 'required',
+            'id' =>'required',
+        ];
+        $this->validate($request, $rules);
+        
+    }
 }
