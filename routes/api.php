@@ -55,4 +55,5 @@ Route::post('bookstatuschanged','StatusChangedController@BookFlagChanged');
 Route::post('ongoingstatuschanged','StatusChangedController@StartFlagChanged');
 Route::post('completedstatuschanged','StatusChangedController@CompletedFlagChanged');
 Route::post('paymentstatuschanged','StatusChangedController@PaymentFlagChanged');
+//Route::post('subcategoryservice','SubCategoryServiceController');
 });
