@@ -34,6 +34,7 @@ Route::resource('serviceprovider','ServiceProviderController');
 Route::resource('favourite','FavouriteController');
 Route::post('ongoingtracker','TrackerController@OngoingTracker');
 Route::post('completedtracker','TrackerController@CompletedTracker');
+Route::post('canceledtracker','TrackerController@CancelledTracker');
 Route::resource('book','OperationController');
 Route::resource('rateandreview','RateAndReviewController');
 Route::resource('cartgroup','CartGroupController');
@@ -51,9 +52,10 @@ Route::post('serviceselection','ServiceProviderSelectionController@serviceSelect
 Route::group(['middleware'=>['auth:api','serviceprovider']],function(){
 Route::post('providerongoingtracker','TrackerController@ProviderOngoingTracker');
 Route::post('providercompletedtracker','TrackerController@ProviderCompletedTracker');
+Route::post('providercancelledtracker','TrackerController@ProviderCancelledTracker');
 Route::post('bookstatuschanged','StatusChangedController@BookFlagChanged');
 Route::post('ongoingstatuschanged','StatusChangedController@StartFlagChanged');
 Route::post('completedstatuschanged','StatusChangedController@CompletedFlagChanged');
 Route::post('paymentstatuschanged','StatusChangedController@PaymentFlagChanged');
-//Route::post('subcategoryservice','SubCategoryServiceController');
+Route::resource('serviceChooser','SubCategoryServiceProviderController');
 });

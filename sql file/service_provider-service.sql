@@ -7,7 +7,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 
-INSERT INTO `service_provider-service` VALUES
+INSERT INTO `sub_category_service_providers` VALUES
 (3, 1),
 (4, 2),
 (5, 3),

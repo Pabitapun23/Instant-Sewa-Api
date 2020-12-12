@@ -26,7 +26,7 @@ class ServiceProviderSelectionController extends Controller
         $start = Carbon::parse($request->startDate);
         $end = Carbon::parse($request->endDate);
         $subcategory_id = DB::table('sub_categories')->where('name', $request['subcategories_name'])->get()->pluck('id');
-        $service_providers_id = DB::table('sub_category_services')->where('subcategories_id',$subcategory_id)->get()->pluck('service_provider_id');
+        $service_providers_id = DB::table('sub_category_service_providers')->where('subcategories_id',$subcategory_id)->get()->pluck('service_provider_id');
          $free_service_providers = DB::table('operations')->whereBetween('start_time', [$start, $end])->whereBetween('end_time', [$start, $end])->get()->pluck('service_provider_id');
          $list_count=count($service_providers_id);
          $list_count2=count($free_service_providers);

@@ -16,7 +16,7 @@ class TrackerController extends Controller
 
        $this->validate($request, $rules);
 
-      $services = DB::table('operations')->select('cart_collection_id','id','start_time')->where('service_user_id', $request['service_user_id'])->where('completed_flag','1')->orWhere('cancel_flag','1')->orderBy('start_time', 'asc')->get();
+      $services = DB::table('operations')->select('cart_collection_id','id','start_time')->where('service_user_id', $request['service_user_id'])->where('completed_flag','1')->orderBy('start_time', 'asc')->get();
        return new OngoingTrackerCollection($services);
     }
      public function OngoingTracker(Request $request)
@@ -28,6 +28,30 @@ class TrackerController extends Controller
        $this->validate($request, $rules);
 
       $services = DB::table('operations')->select('cart_collection_id','id','start_time')->where('service_user_id', $request['service_user_id'])->where('completed_flag','0')->where('cancel_flag','0')->orderBy('start_time', 'asc')->get();
+       return new OngoingTrackerCollection($services);
+    }
+
+     public function CancelledTracker(Request $request)
+    {
+      $rules = [
+            'service_user_id' => 'required'
+        ];
+
+       $this->validate($request, $rules);
+
+      $services = DB::table('operations')->select('cart_collection_id','id','start_time')->where('service_user_id', $request['service_user_id'])->where('cancel_flag','1')->orderBy('start_time', 'asc')->get();
+       return new OngoingTrackerCollection($services);
+    }
+
+     public function ProviderCancelledTracker(Request $request)
+    {
+      $rules = [
+            'service_provider_id' => 'required'
+        ];
+
+       $this->validate($request, $rules);
+
+      $services = DB::table('operations')->select('cart_collection_id','id','start_time')->where('service_provider_id', $request['service_user_id'])->where('cancel_flag','1')->orderBy('start_time', 'asc')->get();
        return new OngoingTrackerCollection($services);
     }
     public function ProviderCompletedTracker(Request $request)

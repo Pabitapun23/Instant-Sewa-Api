@@ -70,7 +70,6 @@ private function getResponse(User $user)
     	$token=$tokenResult->token;
     	$token->expires_at = Carbon::now()->addWeeks(1);
     	$token->save();
-
     	return response(
             ['user' => $user,
             'accessToken'=>$tokenResult->accessToken,
