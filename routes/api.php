@@ -58,4 +58,5 @@ Route::post('ongoingstatuschanged','StatusChangedController@StartFlagChanged');
 Route::post('completedstatuschanged','StatusChangedController@CompletedFlagChanged');
 Route::post('paymentstatuschanged','StatusChangedController@PaymentFlagChanged');
 Route::resource('serviceChooser','SubCategoryServiceProviderController');
+Route::post('serviceChecker','SubCategoryServiceProviderController@ServiceCount');
 });

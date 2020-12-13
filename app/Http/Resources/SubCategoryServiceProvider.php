@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Lookups;
+namespace App\Http\Resources;
 
-use App\Http\Controllers\CategorySubCategoryController;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Category extends JsonResource
+class SubCategoryServiceProvider extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +14,7 @@ class Category extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+         return [
             'identifier' => $this->id,
             'title' => $this->name,
             'subCategory' => CategorySubCategoryController::index($this->id),

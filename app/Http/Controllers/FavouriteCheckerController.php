@@ -16,7 +16,6 @@ public function isAvailable(Request $request)
         ];
 
         $this->validate($request, $rules);
-       //return $request['service_provider_id'];
          if (DB::table('favourites')->where('service_user_id','=',$request['service_user_id'])->where('service_provider_id','=',$request['service_provider_id'])->exists()) {
          	return response(
          ['data' => 'true'],200);
