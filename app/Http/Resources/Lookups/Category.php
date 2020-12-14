@@ -18,7 +18,6 @@ class Category extends JsonResource
         return [
             'identifier' => $this->id,
             'title' => $this->name,
-            'subCategory' => CategorySubCategoryController::index($this->id),
             'image'=>$this->image,
             'details'=>$this->description,
             'creationDate' =>$this->created_at,

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SubCategoryCollection;
+use App\Http\Resources\SubCategoryServiceProviderCollection;
+use App\Models\Lookups\Category;
 use App\Models\Models\SubCategoryServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SubCategoryServiceProviderController extends Controller
 {
@@ -98,4 +102,9 @@ class SubCategoryServiceProviderController extends Controller
         $count=count($subcategories_id);
         return $count;
     } 
+   public static  function  subCategory($id)
+    {
+        $subcategories = DB::table('sub_categories')->where('category_id', $id)->get();
+        return new SubCategoryCollection($subcategories);
+    }
 }

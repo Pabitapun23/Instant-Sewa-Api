@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Resources;
-
+use App\Http\Controllers\SubCategoryServiceProviderController;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SubCategoryServiceProvider extends JsonResource
@@ -17,7 +17,7 @@ class SubCategoryServiceProvider extends JsonResource
          return [
             'identifier' => $this->id,
             'title' => $this->name,
-            'subCategory' => CategorySubCategoryController::index($this->id),
+            'subCategory' => SubCategoryServiceProviderController::subCategory($this->id),
             'image'=>$this->image,
             'details'=>$this->description,
             'creationDate' =>$this->created_at,
