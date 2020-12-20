@@ -56,7 +56,7 @@ class OperationController extends Controller
        $operation->address_longitude  = $request->address_longitude;
        $operation->address_address  = $request->address_address;
        $operation->service_provider_id  = $request->service_provider_id;
-       $operation->service_user_id  = $request->service_user_id;
+       $operation->service_user_id  = $request->user()->id;
        $operation->start_time  = $request->start_time;
        $operation->end_time  = $request->end_time;
       $operation->save();

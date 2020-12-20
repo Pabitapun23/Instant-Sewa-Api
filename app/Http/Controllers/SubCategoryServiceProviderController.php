@@ -40,11 +40,13 @@ class SubCategoryServiceProviderController extends Controller
        public function store(Request $request)
     {
         $rules = [
-            'service_provider_id' => 'required',
             'subcategories_id' =>'required',
         ];
         $this->validate($request, $rules);
-         $services = SubCategoryServiceProvider::create($request->all());
+         $services = new SubCategoryServiceProvider();
+         $services->subcategories_id = $request->subcategories_id;
+         $services->service_provider_id = $request->user()->id;
+         $services->save();
         return $services;
     }
 
@@ -94,11 +96,7 @@ class SubCategoryServiceProviderController extends Controller
     }
     public function ServiceCount(Request $request)
     {
-        $rules = [
-            'service_provider_id' =>'required',
-        ];
-        $this->validate($request, $rules);
-        $subcategories_id = DB::table('sub_category_service_providers')->where('service_provider_id',$request['service_provider_id'])->get()->pluck('subcategories_id');
+        $subcategories_id = DB::table('sub_category_service_providers')->where('service_provider_id',$request->user()->id)->get()->pluck('subcategories_id');
         $count=count($subcategories_id);
         return $count;
     } 

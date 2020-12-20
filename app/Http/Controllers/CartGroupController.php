@@ -6,6 +6,7 @@ use App\Models\CartGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class CartGroupController extends Controller
 {
@@ -37,15 +38,10 @@ class CartGroupController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'service_user' => 'required|string|max:255',
-        ]);
-        if ($validator->fails()) {
-            return response(['errors'=>$validator->errors()],422);
-        }
+        $randomString = Str::random(10);
         $cart_group = new CartGroup();
+        $cart_group->collection_name = $request->user()->username." ".$randomString;
         $cart_group->save();
-         DB::table('cart_groups')->where('id',$cart_group->id)->update(['collection_name'=>$request['service_user'].$cart_group->id]);
          return $cart_group->id;
     }
 
