@@ -6,6 +6,8 @@ use App\Http\Resources\CartResourceCollection;
 use App\Http\Resources\OperationResource;
 use App\Http\Resources\OperationResourceCollection;
 use App\Models\Operation;
+use App\Models\User;
+use App\Notifications\OrderCreation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,7 +46,6 @@ class OperationController extends Controller
             'address_longitude' =>'required',
             'address_address' =>'required',
             'service_provider_id' => 'required',
-            'service_user_id' => 'required',
             'start_time' =>'required',
             'end_time' =>'required',
         ];
@@ -60,6 +61,8 @@ class OperationController extends Controller
        $operation->start_time  = $request->start_time;
        $operation->end_time  = $request->end_time;
       $operation->save();
+      $user = User::findOrFail($request->service_provider_id);
+      $user->notify(new OrderCreation($operation));
         return $operation;
     }
 

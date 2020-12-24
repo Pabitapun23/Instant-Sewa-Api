@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,9 +23,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	Route::post('/login','AuthController@login');
 	Route::get('/logout','AuthController@logout')->middleware('auth:api');
 	Route::get('/user','AuthController@user')->middleware('auth:api');
+	Route::get('/verify','AuthController@verifyUser');
 	Route::get('authentication-failed','AuthController@authFailed')->name('auth-failed');
 });
 Route::group(['middleware'=>'auth:api'],function(){
+Route::get('/notification','NotificationController@Notify');
 Route::resource('category','CategoryController');
 Route::resource('subcategory','SubCategoryController');
 Route::resource('category.subcategory','CategorySubCategoryController');
