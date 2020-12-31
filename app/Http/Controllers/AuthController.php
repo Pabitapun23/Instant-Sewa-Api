@@ -86,10 +86,23 @@ private function getResponse(User $user)
 public function verifyUser(Request $request)
 {
     $verification_token = $request->code;
-    $user = User::where(['verification_token' => $verification_token])->first();
-    if ($user != null) {
+    $user = User::where(['verification_token' => $verification_token])->firstorFail();
         $user->verified = 1;
+        $user->verification_token = null;
+
         $user -> save();
+
+        return  response(['message'=>'The account '.$user->username.' has been verified sucessfully'],200);
+}
+
+public function resend(Request $request)
+{
+    $user = $request->user();
+    if($user->verified = 1)
+    {
+        return  response(['error'=>'User is alreadyverified'],409);
     }
+     MailController::sendSignupEmail($user->username,$user->email,$user->verification_token);
+ return  response(['message'=>'The account '.$user->username.' has been sent verification code in mail'],200);    
 }
 }

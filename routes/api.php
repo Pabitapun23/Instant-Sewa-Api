@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::get('search/{q}','SearchController@Search');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -24,6 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	Route::get('/logout','AuthController@logout')->middleware('auth:api');
 	Route::get('/user','AuthController@user')->middleware('auth:api');
 	Route::get('/verify','AuthController@verifyUser');
+	Route::post('/resend','AuthController@resend')->middleware('auth:api');
 	Route::get('authentication-failed','AuthController@authFailed')->name('auth-failed');
 });
 Route::group(['middleware'=>'auth:api'],function(){
