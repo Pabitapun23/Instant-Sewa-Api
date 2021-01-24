@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ServiceProviderCollection;
+use App\Models\RateAndReview;
 use App\Models\ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -83,4 +84,22 @@ class ServiceProviderController extends Controller
             
         return $occupation;
     }
+    public static function rating($id)
+    {
+        $rating =  DB::table('rate_and_reviews')->where('service_provider_id', $id)->get()->pluck('rating');
+        $count = count($rating);
+        $sum = 0.0;
+        if($count == 0)
+        {
+            return 0.0;
+        }
+        else{
+        for ($i=0; $i <$count ; $i++) 
+         {
+            $sum = $sum + $rating[$i];
+         }
+         $rate = $sum / $count;
+         return $rate;
+    }
+}
 }

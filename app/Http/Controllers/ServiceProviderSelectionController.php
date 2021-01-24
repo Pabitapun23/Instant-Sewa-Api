@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\ServiceProviderController;
 use App\Http\Resources\ServiceProviderCollection;
 use App\Http\Resources\ServiceProviderSelectionCollection;
 use App\Http\Resources\ServiceResourceCollection;
@@ -47,6 +48,41 @@ class ServiceProviderSelectionController extends Controller
         )))->whereIn('id',$service_providers_id)
         ->having('distance', '<', 5)
         ->orderBy('distance', 'asc')
+        ->get();
+         return new ServiceProviderSelectionCollection($location);
+    }
+        public function serviceProviderselectionListByRate(Request $request)
+    {
+        $rules = [
+            'subcategories_name' =>'required',
+            'serviceusers_latitude' =>'required',
+            'serviceusers_longitude' =>'required',
+            'startDate' =>'required',
+            'endDate' =>'required',
+        ];
+        
+        $this->validate($request, $rules);
+        $start = Carbon::parse($request->startDate);
+        $end = Carbon::parse($request->endDate);
+        $subcategory_id = DB::table('sub_categories')->where('name', $request['subcategories_name'])->get()->pluck('id');
+        $service_providers_id = DB::table('sub_category_service_providers')->where('subcategories_id',$subcategory_id)->get()->pluck('service_provider_id');
+         $free_service_providers = DB::table('operations')->whereBetween('start_time', [$start, $end])->whereBetween('end_time', [$start, $end])->get()->pluck('service_provider_id');
+         $list_count=count($service_providers_id);
+         $list_count2=count($free_service_providers);
+         for($i=0;$i<$list_count;$i++)
+         {
+         for($j=0;$j<$list_count2;$j++)
+         {
+            if($service_providers_id[$i]==$free_service_providers[$j]){
+                unset($service_providers_id[$i]);;
+            }
+        }
+        }
+         $location = DB::table('users')
+         ->select('id','username', 'address_latitude', 'address_longitude','address_address', DB::raw('ServiceProviderController::rating(id) AS rating',
+        ))->whereIn('id',$service_providers_id)
+        ->having('rating', '>', 3)
+        ->orderBy('rating', 'asc')
         ->get();
          return new ServiceProviderSelectionCollection($location);
     }
