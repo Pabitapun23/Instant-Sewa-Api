@@ -21,7 +21,7 @@ class StatusChangedController extends Controller
             'status'=>'required',
         ];
         $this->validate($request, $rules);
-        if($request['operation_id']=='1')
+        if($request['status']=='1')
         {
         DB::table('operations')->where('id',$request['operation_id'])->update(['booked_flag'=>'1']);
         $operation = Operation::findOrFail($request->operation_id);
