@@ -11,12 +11,11 @@ class FavouriteCheckerController extends Controller
 public function isAvailable(Request $request)
     {
          $rules = [
-            'service_user_id' => 'required',
             'service_provider_id' => 'required',
         ];
 
         $this->validate($request, $rules);
-         if (DB::table('favourites')->where('service_user_id','=',$request['service_user_id'])->where('service_provider_id','=',$request['service_provider_id'])->exists()) {
+         if (DB::table('favourites')->where('service_user_id','=',$request->user()->id)->where('service_provider_id','=',$request['service_provider_id'])->exists()) {
          	return response(
          ['data' => 'true'],200);
         }
@@ -30,12 +29,11 @@ public function deleteFavourite(Request $request)
 {
 
          $rules = [
-            'service_user_id' => 'required',
             'service_provider_id' => 'required',
         ];
 
         $this->validate($request, $rules);
-      DB::table('favourites')->where('service_user_id','=',$request['service_user_id'])->where('service_provider_id','=',$request['service_provider_id'])->delete();
+      DB::table('favourites')->where('service_user_id','=',$request->user()->id)->where('service_provider_id','=',$request['service_provider_id'])->delete();
 }    
 }
 

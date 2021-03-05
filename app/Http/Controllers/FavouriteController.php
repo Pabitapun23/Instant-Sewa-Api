@@ -25,13 +25,15 @@ class FavouriteController extends Controller
     public function store(Request $request)
     {
          $rules = [
-            'service_user_id' => 'required',
             'service_provider_id' => 'required',
         ];
 
         $this->validate($request, $rules);
 
-        $favourite = Favourite::create($request->all());
+        $favourite = new Favourite();
+        $favourite->service_provider_id = $request['service_provider_id'];
+        $favourite->service_user_id = $request->user()->id;
+        $favourite->save();
         return $favourite;
     }
 
