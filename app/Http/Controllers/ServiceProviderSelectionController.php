@@ -78,15 +78,15 @@ class ServiceProviderSelectionController extends Controller
             }
         }
         }
-         $location = DB::table('users')
-         ->select('id','username', 'address_latitude', 'address_longitude','address_address', DB::raw(sprintf( 'ServiceProviderController::rating($this->id)AS rating',
-            $request->input('serviceusers_latitude'),
-            $request->input('serviceusers_longitude')
-        )))->whereIn('id',$service_providers_id)
-        ->having('rating', '>', 3)
-        ->orderBy('rating', 'asc')
-        ->get();
-         return new ServiceProviderSelectionCollection($location);
+        //  $location = DB::table('users')
+        //  ->select('id','username', 'address_latitude', 'address_longitude','address_address', DB::raw(sprintf( 'ServiceProviderController::rating(id)AS rating',
+        //     $request->input('serviceusers_latitude'),
+        //     $request->input('serviceusers_longitude')
+        // )))->whereIn('id',$service_providers_id)
+        // ->having('rating', '>', 3)
+        // ->orderBy('rating', 'asc')
+        // ->get();
+         return new ServiceProviderSelectionCollection($service_providers_id);
     }
 
      public function serviceSelectionList(Request $request)
