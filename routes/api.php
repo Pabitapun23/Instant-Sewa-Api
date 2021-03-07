@@ -51,7 +51,6 @@ Route::post('addressUpdate','ServiceUserUpdate@updateAddress');
 Route::post('phoneNoUpdate','ServiceUserUpdate@updatePhoneNo');
 Route::post('profileimageupdate','ServiceUserUpdate@updateProfilePicture');
 Route::post('serviceproviderselectionbydistance','ServiceProviderSelectionController@serviceProviderselectionListByDistance');
-Route::post('favserviceproviderselection','ServiceProviderSelectionController@favouriteServiceProviderselectionListByDistance');
 Route::post('serviceproviderselectionbyrating','ServiceProviderSelectionController@serviceProviderselectionListByRate');
 Route::post('serviceselection','ServiceProviderSelectionController@serviceSelectionList');
 });
