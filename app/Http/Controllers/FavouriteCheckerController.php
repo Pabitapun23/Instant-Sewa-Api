@@ -29,7 +29,6 @@ public function deleteFavourite(Request $request)
 {
 
          $rules = [
-            'service_user_id' => 'required',
             'service_provider_id' => 'required',
         ];
 

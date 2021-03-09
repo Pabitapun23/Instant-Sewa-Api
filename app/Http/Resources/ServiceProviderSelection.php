@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Controllers\ServiceProviderController;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ServiceProviderSelection extends JsonResource
@@ -21,6 +22,7 @@ class ServiceProviderSelection extends JsonResource
             'longitude' => $this->address_longitude,
             'address'=>$this->address_address,
             'distance'=>$this->distance,
+            'rate'=>ServiceProviderController::rating($this->id)
         ];
     }
 }

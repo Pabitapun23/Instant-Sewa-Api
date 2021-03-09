@@ -7,6 +7,7 @@ use App\Http\Resources\ServiceProviderCollection;
 use App\Http\Resources\ServiceProviderSelectionCollection;
 use App\Http\Resources\ServiceResourceCollection;
 use App\Http\Resources\ServiceSelectionCollection;
+use App\Models\RateAndReview;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -74,19 +75,35 @@ class ServiceProviderSelectionController extends Controller
          for($j=0;$j<$list_count2;$j++)
          {
             if($service_providers_id[$i]==$free_service_providers[$j]){
-                unset($service_providers_id[$i]);;
+                unset($service_providers_id[$i]);
             }
         }
         }
-        //  $location = DB::table('users')
-        //  ->select('id','username', 'address_latitude', 'address_longitude','address_address', DB::raw(sprintf( 'ServiceProviderController::rating(id)AS rating',
-        //     $request->input('serviceusers_latitude'),
-        //     $request->input('serviceusers_longitude')
-        // )))->whereIn('id',$service_providers_id)
-        // ->having('rating', '>', 3)
-        // ->orderBy('rating', 'asc')
-        // ->get();
-         return new ServiceProviderSelectionCollection($service_providers_id);
+        $provider = DB::table('users')->whereIn('id',$service_providers_id)->get()->pluck('id');
+        $list_count=count($provider);
+        for($i=0;$i<$list_count;$i++)
+         {
+            if(round(ServiceProviderController::rating($provider[$i]))<3)
+            {
+                unset($provider[$i]);
+            }
+         }
+          $service_providers_id = [];
+          foreach ($provider  as $key => $value)
+          {
+            $service_providers_id[] = $value;
+        }
+      //  $service_providers_id = ServiceProviderSelectionController::rateasc($service_providers_id);
+        $location = DB::table('users')
+         ->select('id','username', 'address_latitude', 'address_longitude','address_address', DB::raw(sprintf(
+             '(6371 * acos(cos(radians(%1$.7f)) * cos(radians(address_latitude)) * cos(radians(address_longitude) - radians(%2$.7f)) + sin(radians(%1$.7f)) * sin(radians(address_latitude)))) AS distance',
+            $request->input('serviceusers_latitude'),
+            $request->input('serviceusers_longitude')
+        )))->whereIn('id',$service_providers_id)
+        ->having('distance', '<', 5)
+        ->orderBy('distance', 'asc')
+        ->get();
+         return new ServiceProviderSelectionCollection($location);
     }
 
      public function serviceSelectionList(Request $request)
@@ -160,6 +177,10 @@ class ServiceProviderSelectionController extends Controller
         ->orderBy('distance', 'asc')
         ->get();
          return new ServiceProviderSelectionCollection($location);
+    }
+    public function rateasc($service_providers_id)
+    {
+
     }
 
 }
