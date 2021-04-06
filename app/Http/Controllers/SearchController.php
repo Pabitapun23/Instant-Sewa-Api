@@ -11,9 +11,9 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
-    public function Search($q)
+    public function Search()
     {
-   $category = Category::select('name')->where('name','LIKE','%'.$q.'%')->orWhere('description','LIKE','%'.$q.'%')->get();
+   $category = Category::select('name')->get();
     $subcategory = SubCategory::select('name')->where('name','LIKE','%'.$q.'%')->orWhere('description','LIKE','%'.$q.'%')->get();
     $service = Service::select('name')->where('name','LIKE','%'.$q.'%')->orWhere('description','LIKE','%'.$q.'%')->get();
     //$operation = Operation::where('address_address','LIKE','%'.$q.'%')->orWhere('start_time','LIKE','%'.$q.'%')->orWhere('end_time','LIKE','%'.$q.'%')->orWhere('completed_time','LIKE','%'.$q.'%')->where('end_time','LIKE','%'.$q.'%')->get();
