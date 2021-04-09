@@ -83,4 +83,12 @@ class SubCategoryController extends Controller
     {
         //
     }
+    public function subCategoryFinder(Request $request)
+    {
+        $rules = [
+            'name' =>'required',
+        ];
+        $data = SubCategory::where('name',$request['name'])->get();
+        return $data;         
+    }
 }

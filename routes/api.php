@@ -31,6 +31,7 @@ Route::group(['middleware'=>'auth:api'],function(){
 Route::get('/notification','NotificationController@Notify');
 Route::resource('category','CategoryController');
 Route::resource('subcategory','SubCategoryController');
+Route::post('subcategoryfinder','SubCategoryController@subCategoryFinder');
 Route::resource('category.subcategory','CategorySubCategoryController');
 Route::resource('subcategory.service','SubCategoryServiceController');
 Route::resource('service','ServiceController');
@@ -54,6 +55,7 @@ Route::post('serviceproviderselectionbydistance','ServiceProviderSelectionContro
 Route::post('serviceproviderselectionbyrating','ServiceProviderSelectionController@serviceProviderselectionListByRate');
 Route::post('favserviceproviderselection','ServiceProviderSelectionController@favouriteServiceProviderselectionListByDistance');
 Route::post('serviceselection','ServiceProviderSelectionController@serviceSelectionList');
+
 });
 Route::group(['middleware'=>['auth:api','serviceprovider']],function(){
 Route::post('providerongoingtracker','TrackerController@ProviderOngoingTracker');
