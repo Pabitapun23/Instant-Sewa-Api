@@ -13,18 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/admin', function () {
-//     return view('admin.dashboard');
-// });
-
-// Route::get('paywithpaypal', array('as' => 'paywithpaypal','uses' => 'PaypalController@payWithPaypal',));
-// Route::post('paypal', array('as' => 'paypal','uses' => 'PaypalController@postPaymentWithpaypal',));
-// Route::get('paypal', array('as' => 'status','uses' => 'PaypalController@getPaymentStatus',));
-
-// Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', function () {
+    return view('welcome');
+});
+Route::get('payment', 'PayPalController@payment')->name('payment');
+Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
+Route::get('payment/success', 'PayPalController@success')->name('payment.success');

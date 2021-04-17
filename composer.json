@@ -16,7 +16,7 @@
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
-        "paypal/rest-api-sdk-php": "^1.14"
+        "srmklive/paypal": "~1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -36,11 +36,11 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'host' => env('MAIL_HOST', 'smtp.googlemail.com'),
+            'port' => env('MAIL_PORT', 465),
+            'encryption' => env('MAIL_ENCRYPTION', 'ssl'),
+            'username' => env('Habis5660@gmail.com'),
+            'password' => env('H*a+b-i=s/566098106615600***'),
             'timeout' => null,
             'auth_mode' => null,
         ],
