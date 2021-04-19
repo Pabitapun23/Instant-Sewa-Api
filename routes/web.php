@@ -16,18 +16,7 @@ use App\Http\Controllers\PushNotificationController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-<<<<<<< HEAD
 
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-});
-
-Route::get('paywithpaypal', array('as' => 'paywithpaypal', 'uses' => 'PaypalController@payWithPaypal',));
-Route::post('paypal', array('as' => 'paypal', 'uses' => 'PaypalController@postPaymentWithpaypal',));
-Route::get('paypal', array('as' => 'status', 'uses' => 'PaypalController@getPaymentStatus',));
 
 Auth::routes();
 
@@ -37,8 +26,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::post('send', [PushNotificationController::class, 'bulksend'])->name('bulksend');
 Route::get('all-notifications', [PushNotificationController::class, 'index']);
 Route::get('get-notification-form', [PushNotificationController::class, 'create']);
-=======
 Route::get('payment', 'PayPalController@payment')->name('payment');
 Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 Route::get('payment/success', 'PayPalController@success')->name('payment.success');
->>>>>>> af829b7b483a746ffc2a183abb6c9a38cdfca9b5
+

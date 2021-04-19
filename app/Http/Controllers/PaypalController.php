@@ -13,14 +13,19 @@ class PayPalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function payment()
+    public function payment(Request $request)
     {
+         $rules = [
+            'cart_name' =>'required',
+            'price' => 'required'
+        ];
+
         $data = [];
         $data['items'] = [
             [
-                'name' => 'ItSolutionStuff.com',
-                'price' => 100,
-                'desc'  => 'Description for ItSolutionStuff.com',
+                'name' => $request['cart_name'],
+                'price' => $request['price'],
+                'desc'  => 'Test 1',
                 'qty' => 1
             ]
         ];
@@ -72,7 +77,6 @@ class PayPalController extends Controller
                     $payment->payment_status = $response[''];
                     $payment->save();
             dd($response);
-            //dd('Payment was successfull. The payment success page goes here!');
         }
   
         dd('Error occured!');
