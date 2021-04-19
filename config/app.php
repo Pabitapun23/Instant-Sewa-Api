@@ -162,10 +162,13 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+
         /*
          * Package Service Providers...
          */
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
+        Benwilkins\FCM\FcmNotificationServiceProvider::class,
+
         /*
          * Application Service Providers...
          */

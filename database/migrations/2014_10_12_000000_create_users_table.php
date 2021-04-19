@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-         Schema::create('users', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('username');
             $table->string('fullname')->nullable();
@@ -30,9 +30,11 @@ class CreateUsersTable extends Migration
             $table->rememberToken()->nullable();
             $table->string('verified')->nullable();
             $table->string('verification_token')->nullable();
+            $table->string('device_token')->nullable();
+
             $table->string('user_type')->default('user');
             $table->timestamps();
-             $table->softDeletes();
+            $table->softDeletes();
         });
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -13,20 +14,51 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('search','SearchController@Search');
+
+Route::get('search', 'SearchController@Search');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-    Route::prefix('auth')->group(function(){
-	Route::post('/register','AuthController@register');
-	Route::post('/login','AuthController@login');
-	Route::get('/logout','AuthController@logout')->middleware('auth:api');
-	Route::get('/user','AuthController@user')->middleware('auth:api');
-	Route::get('/verify','AuthController@verifyUser');
-	Route::post('/resend','AuthController@resend')->middleware('auth:api');
-	Route::get('authentication-failed','AuthController@authFailed')->name('auth-failed');
+Route::prefix('auth')->group(function () {
+    Route::post('/register', 'AuthController@register');
+    Route::post('/login', 'AuthController@login');
+    Route::get('/logout', 'AuthController@logout')->middleware('auth:api');
+    Route::get('/user', 'AuthController@user')->middleware('auth:api');
+    Route::get('/verify', 'AuthController@verifyUser');
+    Route::post('/resend', 'AuthController@resend')->middleware('auth:api');
+    Route::get('authentication-failed', 'AuthController@authFailed')->name('auth-failed');
 });
+<<<<<<< HEAD
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('/notification', 'NotificationController@Notify');
+    Route::resource('category', 'CategoryController');
+    Route::resource('subcategory', 'SubCategoryController');
+    Route::resource('category.subcategory', 'CategorySubCategoryController');
+    Route::resource('subcategory.service', 'SubCategoryServiceController');
+    Route::resource('service', 'ServiceController');
+    Route::resource('serviceprovider', 'ServiceProviderController');
+    Route::resource('favourite', 'FavouriteController');
+    Route::post('ongoingtracker', 'TrackerController@OngoingTracker');
+    Route::post('completedtracker', 'TrackerController@CompletedTracker');
+    Route::post('canceledtracker', 'TrackerController@CancelledTracker');
+    Route::resource('book', 'OperationController');
+    Route::resource('rateandreview', 'RateAndReviewController');
+    Route::resource('cartgroup', 'CartGroupController');
+    Route::resource('cart', 'CartController');
+    Route::resource('serviceuser.favourite', 'ServiceUserFavouriteController', ['only' => ['index']]);
+    Route::post('checker', 'FavouriteCheckerController@isAvailable');
+    Route::post('deleteFavourite', 'FavouriteCheckerController@deleteFavourite');
+    Route::post('fullnameUpdate', 'ServiceUserUpdate@updateFullName');
+    Route::post('addressUpdate', 'ServiceUserUpdate@updateAddress');
+    Route::post('phoneNoUpdate', 'ServiceUserUpdate@updatePhoneNo');
+    Route::post('profileimageupdate', 'ServiceUserUpdate@updateProfilePicture');
+    Route::post('serviceproviderselectionbydistance', 'ServiceProviderSelectionController@serviceProviderselectionListByDistance');
+    Route::post('serviceproviderselectionbyrating', 'ServiceProviderSelectionController@serviceProviderselectionListByRate');
+    Route::post('favserviceproviderselection', 'ServiceProviderSelectionController@favouriteServiceProviderselectionListByDistance');
+    Route::post('serviceselection', 'ServiceProviderSelectionController@serviceSelectionList');
+    Route::post('subcategoryFinder', 'SubCategoryController@showSubCategoryDetails');
+=======
 Route::group(['middleware'=>'auth:api'],function(){
 Route::get('/notification','NotificationController@Notify');
 Route::resource('category','CategoryController');
@@ -56,15 +88,16 @@ Route::post('serviceproviderselectionbyrating','ServiceProviderSelectionControll
 Route::post('favserviceproviderselection','ServiceProviderSelectionController@favouriteServiceProviderselectionListByDistance');
 Route::post('serviceselection','ServiceProviderSelectionController@serviceSelectionList');
 
+>>>>>>> af829b7b483a746ffc2a183abb6c9a38cdfca9b5
 });
-Route::group(['middleware'=>['auth:api','serviceprovider']],function(){
-Route::post('providerongoingtracker','TrackerController@ProviderOngoingTracker');
-Route::post('providercompletedtracker','TrackerController@ProviderCompletedTracker');
-Route::post('providercancelledtracker','TrackerController@ProviderCancelledTracker');
-Route::post('bookstatuschanged','StatusChangedController@BookFlagChanged');
-Route::post('ongoingstatuschanged','StatusChangedController@StartFlagChanged');
-Route::post('completedstatuschanged','StatusChangedController@CompletedFlagChanged');
-Route::post('paymentstatuschanged','StatusChangedController@PaymentFlagChanged');
-Route::resource('serviceChooser','SubCategoryServiceProviderController');
-Route::post('serviceChecker','SubCategoryServiceProviderController@ServiceCount');
+Route::group(['middleware' => ['auth:api', 'serviceprovider']], function () {
+    Route::post('providerongoingtracker', 'TrackerController@ProviderOngoingTracker');
+    Route::post('providercompletedtracker', 'TrackerController@ProviderCompletedTracker');
+    Route::post('providercancelledtracker', 'TrackerController@ProviderCancelledTracker');
+    Route::post('bookstatuschanged', 'StatusChangedController@BookFlagChanged');
+    Route::post('ongoingstatuschanged', 'StatusChangedController@StartFlagChanged');
+    Route::post('completedstatuschanged', 'StatusChangedController@CompletedFlagChanged');
+    Route::post('paymentstatuschanged', 'StatusChangedController@PaymentFlagChanged');
+    Route::resource('serviceChooser', 'SubCategoryServiceProviderController');
+    Route::post('serviceChecker', 'SubCategoryServiceProviderController@ServiceCount');
 });

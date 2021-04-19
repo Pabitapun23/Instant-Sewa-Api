@@ -7,9 +7,12 @@ use App\Http\Resources\OperationResource;
 use App\Http\Resources\OperationResourceCollection;
 use App\Models\Operation;
 use App\Models\User;
+use App\Notifications\NewServiceBooked;
+use App\Notifications\OrderBooked;
 use App\Notifications\OrderCreation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class OperationController extends Controller
 {
@@ -41,28 +44,32 @@ class OperationController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'cart_collection_id' =>'required',
-            'address_latitude' =>'required',
-            'address_longitude' =>'required',
-            'address_address' =>'required',
+            'cart_collection_id' => 'required',
+            'address_latitude' => 'required',
+            'address_longitude' => 'required',
+            'address_address' => 'required',
             'service_provider_id' => 'required',
-            'start_time' =>'required',
-            'end_time' =>'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
         ];
 
-       $this->validate($request, $rules);
-         $operation = new Operation();
-       $operation->cart_collection_id  = $request->cart_collection_id;
-       $operation->address_latitude  = $request->address_latitude;
-       $operation->address_longitude  = $request->address_longitude;
-       $operation->address_address  = $request->address_address;
-       $operation->service_provider_id  = $request->service_provider_id;
-       $operation->service_user_id  = $request->user()->id;
-       $operation->start_time  = $request->start_time;
-       $operation->end_time  = $request->end_time;
-      $operation->save();
-      $user = User::findOrFail($request->service_provider_id);
-      $user->notify(new OrderCreation($operation));
+        $this->validate($request, $rules);
+        $operation = new Operation();
+        $operation->cart_collection_id  = $request->cart_collection_id;
+        $operation->address_latitude  = $request->address_latitude;
+        $operation->address_longitude  = $request->address_longitude;
+        $operation->address_address  = $request->address_address;
+        $operation->service_provider_id  = $request->service_provider_id;
+        $operation->service_user_id  = $request->user()->id;
+        $operation->start_time  = $request->start_time;
+        $operation->end_time  = $request->end_time;
+        $operation->save();
+        $user = User::findOrFail($request->service_provider_id);
+        print('Notification init');
+
+        // Notification::send($user, new NewServiceBooked($operation));
+        print('Notification worked');
+        // $user->notify(new OrderCreation($operation));
         return $operation;
     }
 
@@ -74,9 +81,9 @@ class OperationController extends Controller
      */
     public function show($id)
     {
-        $operation = DB::table('operations')->where('id',$id)->get();
+        $operation = DB::table('operations')->where('id', $id)->get();
         //return $operation;
-         return new OperationResourceCollection($operation);
+        return new OperationResourceCollection($operation);
     }
 
     /**
@@ -110,18 +117,17 @@ class OperationController extends Controller
      */
     public function destroy(Operation $operation)
     {
-        
     }
     public static function serviceProviderName($id)
     {
-         $serviceProviderName = DB::table('users')->select('username')->where('id', $id)->first();
-            
+        $serviceProviderName = DB::table('users')->select('username')->where('id', $id)->first();
+
         return $serviceProviderName->username;
     }
     public static function CartDetails($id)
     {
-         $cartDetails = DB::table('carts')->where('cart_collection_id', $id)->get();
-            
+        $cartDetails = DB::table('carts')->where('cart_collection_id', $id)->get();
+
         return new CartResourceCollection($cartDetails);
     }
 }

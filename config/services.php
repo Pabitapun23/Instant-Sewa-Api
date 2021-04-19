@@ -30,4 +30,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'fcm' => [
+        'key' => 'AAAAkmnCQwg:APA91bF190tv-jCbS9o-OtR19KL9XVMqyXNsRAXss_m0esPapEyEIQcWOIJEnqdDzx8xGLApyxZSvq0TSXq4nlGjxAc28fesb6ZQzk2E5Qcn0INh9Y-zTAxYF7mNyNdVwIDwL6b8NmYe'
+    ]
+
 ];

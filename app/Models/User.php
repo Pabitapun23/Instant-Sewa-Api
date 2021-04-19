@@ -33,6 +33,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function routeNotificationForFcm($notification)
+    {
+        return $this->device_token;
+    }
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -42,8 +47,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     public function ratings()
-{
-    return $this->hasMany(RateAndReview::class);
-}
-
+    {
+        return $this->hasMany(RateAndReview::class);
+    }
 }
