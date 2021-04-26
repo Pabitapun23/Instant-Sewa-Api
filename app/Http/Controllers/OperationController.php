@@ -43,17 +43,17 @@ class OperationController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'cart_collection_id' => 'required',
+         $rules = [
+             'cart_collection_id' => 'required',
             'address_latitude' => 'required',
             'address_longitude' => 'required',
             'address_address' => 'required',
             'service_provider_id' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
-        ];
-
-        $this->validate($request, $rules);
+         ];
+         $this->validate($request, $rules);
+         
         $operation = new Operation();
         $operation->cart_collection_id  = $request->cart_collection_id;
         $operation->address_latitude  = $request->address_latitude;
@@ -65,10 +65,6 @@ class OperationController extends Controller
         $operation->end_time  = $request->end_time;
         $operation->save();
         $user = User::findOrFail($request->service_provider_id);
-        //print('Notification init');
-
-        // Notification::send($user, new NewServiceBooked($operation));
-        //print('Notification worked');
          $user->notify(new OrderCreation($operation));
         return $operation;
     }

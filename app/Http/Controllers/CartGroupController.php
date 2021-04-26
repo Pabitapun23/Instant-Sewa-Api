@@ -40,7 +40,7 @@ class CartGroupController extends Controller
     {
         $randomString = Str::random(10);
         $cart_group = new CartGroup();
-        $cart_group->collection_name = $request->user()->username." ".$randomString;
+        $cart_group->collection_name = $request->user()->username.$randomString;
         $cart_group->save();
          return $cart_group->id;
     }
