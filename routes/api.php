@@ -55,7 +55,7 @@ Route::post('serviceproviderselectionbydistance','ServiceProviderSelectionContro
 Route::post('serviceproviderselectionbyrating','ServiceProviderSelectionController@serviceProviderselectionListByRate');
 Route::post('favserviceproviderselection','ServiceProviderSelectionController@favouriteServiceProviderselectionListByDistance');
 Route::post('serviceselection','ServiceProviderSelectionController@serviceSelectionList');
-Route::post('subcategoryFinder', 'SubCategoryController@showSubCategoryDetails');
+Route::post('subcategoryImageFinder', 'SubCategoryController@subCategoryImageFinder');
 });
 Route::group(['middleware'=>['auth:api','serviceprovider']],function(){
 Route::post('providerongoingtracker','TrackerController@ProviderOngoingTracker');

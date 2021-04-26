@@ -21,12 +21,14 @@ use App\Http\Controllers\PushNotificationController;
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::get('/', function () {
+    return view('welcome');
+});
 // Notification Controllers
 Route::post('send', [PushNotificationController::class, 'bulksend'])->name('bulksend');
 Route::get('all-notifications', [PushNotificationController::class, 'index']);
 Route::get('get-notification-form', [PushNotificationController::class, 'create']);
-Route::get('payment', 'PayPalController@payment')->name('payment');
+Route::get('payment/{cartName}/{total}', 'PayPalController@payment')->name('payment');
 Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 Route::get('payment/success', 'PayPalController@success')->name('payment.success');
 

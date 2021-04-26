@@ -13,7 +13,7 @@ class CreateForiegnkeyTable extends Migration
      */
     public function up()
     {
-         Schema::table('services', function($table) {
+        Schema::table('services', function($table) {
             $table->foreign('sub_categories_id')->references('id')->on('sub_categories')->onDelete('cascade')->onUpdate('cascade');
         });
         Schema::table('sub_categories', function($table) {
@@ -56,6 +56,11 @@ class CreateForiegnkeyTable extends Migration
              $table->foreign('service_user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
          });
+               Schema::table('payments', function($table) {
+             $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade')->onUpdate('cascade');
+
+         });
+       
     }
 
     /**
@@ -65,6 +70,6 @@ class CreateForiegnkeyTable extends Migration
      */
     public function down()
     {
-
+        Schema::dropIfExists('foriegnkey');
     }
 }

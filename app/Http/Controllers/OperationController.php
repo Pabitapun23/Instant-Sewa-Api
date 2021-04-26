@@ -65,11 +65,11 @@ class OperationController extends Controller
         $operation->end_time  = $request->end_time;
         $operation->save();
         $user = User::findOrFail($request->service_provider_id);
-        print('Notification init');
+        //print('Notification init');
 
         // Notification::send($user, new NewServiceBooked($operation));
-        print('Notification worked');
-        // $user->notify(new OrderCreation($operation));
+        //print('Notification worked');
+         $user->notify(new OrderCreation($operation));
         return $operation;
     }
 

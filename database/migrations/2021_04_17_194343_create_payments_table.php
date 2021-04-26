@@ -18,6 +18,7 @@ class CreatePaymentsTable extends Migration
         $table->string('payment_id');
         $table->string('payer_id');
         $table->string('payer_email');
+        $table->BigInteger('cart_id')->unsigned();;
         $table->float('amount', 10, 2);
         $table->string('currency');
         $table->string('payment_status');

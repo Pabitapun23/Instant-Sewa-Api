@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
   
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Srmklive\PayPal\Services\ExpressCheckout;
    
 class PayPalController extends Controller
@@ -13,19 +14,13 @@ class PayPalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function payment(Request $request)
+    public function payment($cartName,$total)
     {
-         $rules = [
-            'cart_name' =>'required',
-            'price' => 'required'
-        ];
-
-        $data = [];
         $data['items'] = [
             [
-                'name' => $request['cart_name'],
-                'price' => $request['price'],
-                'desc'  => 'Test 1',
+                'name' => $cartName,
+                'price' => $total,
+                'desc'  => 'Description for ItSolutionStuff.com',
                 'qty' => 1
             ]
         ];
@@ -34,7 +29,7 @@ class PayPalController extends Controller
         $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
         $data['return_url'] = route('payment.success');
         $data['cancel_url'] = route('payment.cancel');
-        $data['total'] = 100;
+        $data['total'] = $total;
   
         $provider = new ExpressCheckout;
   
@@ -62,23 +57,29 @@ class PayPalController extends Controller
      */
     public function success(Request $request)
     {
-       $provider = new ExpressCheckout;
-        $token = $request->token;
-        $PayerID = $request->PayerID;
-        $response = $provider->getExpressCheckoutDetails($token);
-
+    	$provider = new ExpressCheckout;
+  
+        $response = $provider->getExpressCheckoutDetails($request->token);
+  
         if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
-             $payment = new Payment;
-                    $payment->payment_id = $response['TOKEN'];
+        	 $isPaymentExist = Payment::where('payment_id', $response['CORRELATIONID'])->first();
+        	      if(!$isPaymentExist)
+                {
+                	$cartID= DB::table('cart_groups')->select('id')->where('collection_name', $response['L_NAME0'])->first();
+                    $payment = new Payment;
+                    $payment->payment_id = $response['CORRELATIONID'];
                     $payment->payer_id = $response['PAYERID'];
-                    $payment->payer_email = $response['EMAIL'];
-                    $payment->amount = $response['AMT'];
+                    $payment->payer_email =$response['EMAIL'];
+                    $payment->cart_id=$cartID->id;
+                    $payment->amount = $response['L_AMT0'];
                     $payment->currency = env('PAYPAL_CURRENCY');
-                    $payment->payment_status = $response[''];
+                    $payment->payment_status = $response['ACK'];
                     $payment->save();
+                }
             dd($response);
+            dd('Your payment was successfully. You can create success page here.');
         }
   
-        dd('Error occured!');
+        dd('Something is wrong.');
     }
 }
