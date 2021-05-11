@@ -17,6 +17,7 @@
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "snlbaral/khalti-api": "^1.0",
         "srmklive/paypal": "~1.0"
     },
     "require-dev": {

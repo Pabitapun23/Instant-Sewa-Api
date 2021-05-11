@@ -21,6 +21,9 @@ use App\Http\Controllers\PushNotificationController;
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/khalti', function () {
+    return view('khaltipayment');
+});
 Route::get('/', function () {
     return view('welcome');
 });
@@ -31,4 +34,5 @@ Route::get('get-notification-form', [PushNotificationController::class, 'create'
 Route::get('payment/{cartName}/{total}', 'PayPalController@payment')->name('payment');
 Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 Route::get('payment/success', 'PayPalController@success')->name('payment.success');
+Route::post('/verification', [App\Http\Controllers\KhaltiPaymentController::class, 'verification'])->name('verification');
 
