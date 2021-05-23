@@ -24,7 +24,7 @@ class ServiceProviderSelectionController extends Controller
             'endDate' =>'required',
         ];
         $this->validate($request, $rules);
-        return('hello');
+    
         $start = Carbon::parse($request->startDate);
         $end = Carbon::parse($request->endDate);
         $subcategory_id = DB::table('sub_categories')->where('name', $request['subcategories_name'])->get()->pluck('id');
