@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 class ServiceUserUpdate extends Controller
 {
+     public function updateDeviceToken(Request $request)
+    {
+        $rules = [
+            'deviceToken' => 'required|string|max:255',
+        ];
+        $this->validate($request, $rules);
+        DB::table('users')->where('id',$request->user()->id)->update(['device_token'=>$request['deviceToken']]);
+    }
     public function updateFullName(Request $request)
     {
     	$rules = [

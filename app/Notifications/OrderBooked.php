@@ -30,7 +30,7 @@ class OrderBooked extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['fcm'];
     }
 
 
@@ -40,11 +40,16 @@ class OrderBooked extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
-    {
-        return[
-            'operation_id' => $this->operation->id,
-            'cart_name' =>TrackerController::CartCollectionName($this->operation->cart_collection_id)
-        ];
-    }
+    public function toFcm($notifiable) 
+{
+    $message = new FcmMessage();
+    $message->content([
+        'title'        => 'Foo', 
+        'body'         => 'Bar'
+    ])->data([
+        'param1' => 'baz' // Optional
+    ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
+    
+    return $message;
+}
 }
