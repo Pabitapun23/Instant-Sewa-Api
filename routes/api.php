@@ -48,6 +48,7 @@ Route::resource('serviceuser.favourite','ServiceUserFavouriteController',['only'
 Route::post('checker','FavouriteCheckerController@isAvailable');
 Route::post('deleteFavourite','FavouriteCheckerController@deleteFavourite');
 Route::post('fullnameUpdate','ServiceUserUpdate@updateFullName');
+Route::post('deviceTokenUpdate','ServiceUserUpdate@updateDeviceToken');
 Route::post('addressUpdate','ServiceUserUpdate@updateAddress');
 Route::post('phoneNoUpdate','ServiceUserUpdate@updatePhoneNo');
 Route::post('profileimageupdate','ServiceUserUpdate@updateProfilePicture');
@@ -56,6 +57,8 @@ Route::post('serviceproviderselectionbyrating','ServiceProviderSelectionControll
 Route::post('favserviceproviderselection','ServiceProviderSelectionController@favouriteServiceProviderselectionListByDistance');
 Route::post('serviceselection','ServiceProviderSelectionController@serviceSelectionList');
 Route::post('subcategoryImageFinder', 'SubCategoryController@subCategoryImageFinder');
+Route::post('subCategoryIndexFinder', 'SubCategoryController@subCategoryIndexFinder');
+
 });
 Route::group(['middleware'=>['auth:api','serviceprovider']],function(){
 Route::post('providerongoingtracker','TrackerController@ProviderOngoingTracker');

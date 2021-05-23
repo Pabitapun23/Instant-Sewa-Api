@@ -31,6 +31,6 @@ return [
     ],
 
     'fcm' => [
-        'key' => 'AAAAkmnCQwg:APA91bF190tv-jCbS9o-OtR19KL9XVMqyXNsRAXss_m0esPapEyEIQcWOIJEnqdDzx8xGLApyxZSvq0TSXq4nlGjxAc28fesb6ZQzk2E5Qcn0INh9Y-zTAxYF7mNyNdVwIDwL6b8NmYe'
+        'key' => 'AAAAsVKiplg:APA91bHbjkaYby0eWPKFFCdJfo_MW0ggJYTmsgYgCci3jjSC2H_2_EWzhR-KGMQxH7sD0QtDi4cSe2x54fsFUjCrG-xfm8LH6zltwuKHQBTN_rcFW-MjmEOPY0brRGvrkyZbTtsQ8jZd'
     ]
 ];

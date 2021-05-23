@@ -88,7 +88,15 @@ class SubCategoryController extends Controller
         $rules = [
             'name' =>'required',
         ];
-        $subcategories = SubCategory::where('name',$request['name'])->get();
-       return new SubCategoryCollection($subcategories);        
+        $subcategories = SubCategory::select('id','image')->where('name',$request['name'])->get();
+       return $subcategories;        
+    }
+    public function subCategoryIndexFinder(Request $request)
+    {
+        $rules = [
+            'name' =>'required',
+        ];
+        $subcategories = SubCategory::where('name',$request['name'])->get()->pluck('id');
+       return $subcategories;        
     }
 }
