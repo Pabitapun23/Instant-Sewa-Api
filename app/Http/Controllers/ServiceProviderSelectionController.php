@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\ServiceProviderController;
+use App\Http\Controllers\TempRatingController;
 use App\Http\Resources\ServiceProviderCollection;
 use App\Http\Resources\ServiceProviderSelectionCollection;
 use App\Http\Resources\ServiceResourceCollection;
@@ -24,7 +25,7 @@ class ServiceProviderSelectionController extends Controller
             'endDate' =>'required',
         ];
         $this->validate($request, $rules);
-    
+    TempRatingController::fillData();
         $start = Carbon::parse($request->startDate);
         $end = Carbon::parse($request->endDate);
         $subcategory_id = DB::table('sub_categories')->where('name', $request['subcategories_name'])->get()->pluck('id');
@@ -41,8 +42,9 @@ class ServiceProviderSelectionController extends Controller
             }
         }
         }
-         $location = DB::table('users')
-         ->select('id','username', 'address_latitude', 'address_longitude','address_address', DB::raw(sprintf(
+        $location = DB::table('users')->join('temp_ratings', 'temp_ratings.service_provider_id', '=', 'users.id')
+          ->select('users.id','username', 'address_latitude', 'address_longitude','address_address','temp_ratings.average_rating AS rating',
+           DB::raw(sprintf(
              '(6371 * acos(cos(radians(%1$.7f)) * cos(radians(address_latitude)) * cos(radians(address_longitude) - radians(%2$.7f)) + sin(radians(%1$.7f)) * sin(radians(address_latitude)))) AS distance',
             $request->input('serviceusers_latitude'),
             $request->input('serviceusers_longitude')
@@ -65,6 +67,7 @@ class ServiceProviderSelectionController extends Controller
         $this->validate($request, $rules);
         $start = Carbon::parse($request->startDate);
         $end = Carbon::parse($request->endDate);
+        TempRatingController::fillData();
         $subcategory_id = DB::table('sub_categories')->where('name', $request['subcategories_name'])->get()->pluck('id');
         $service_providers_id = DB::table('sub_category_service_providers')->where('subcategories_id',$subcategory_id)->get()->pluck('service_provider_id');
          $free_service_providers = DB::table('operations')->whereBetween('start_time', [$start, $end])->whereBetween('end_time', [$start, $end])->get()->pluck('service_provider_id');
@@ -79,30 +82,20 @@ class ServiceProviderSelectionController extends Controller
             }
         }
         }
-        $provider = DB::table('users')->whereIn('id',$service_providers_id)->get()->pluck('id');
-        $list_count=count($provider);
-        for($i=0;$i<$list_count;$i++)
-         {
-            if(round(ServiceProviderController::rating($provider[$i]))<3)
-            {
-                unset($provider[$i]);
-            }
-         }
-          $service_providers_id = [];
-          foreach ($provider  as $key => $value)
-          {
-            $service_providers_id[] = $value;
-        }
-      //  $service_providers_id = ServiceProviderSelectionController::rateasc($service_providers_id);
-        $location = DB::table('users')
-         ->select('id','username', 'address_latitude', 'address_longitude','address_address', DB::raw(sprintf(
-             '(6371 * acos(cos(radians(%1$.7f)) * cos(radians(address_latitude)) * cos(radians(address_longitude) - radians(%2$.7f)) + sin(radians(%1$.7f)) * sin(radians(address_latitude)))) AS distance',
-            $request->input('serviceusers_latitude'),
-            $request->input('serviceusers_longitude')
-        )))->whereIn('id',$service_providers_id)
-        ->having('distance', '<', 5)
-        ->orderBy('distance', 'asc')
-        ->get();
+         $provider = DB::table('users')->whereIn('id',$service_providers_id)->get()->pluck('id');
+          $location = DB::table('users')->join('temp_ratings', 'temp_ratings.service_provider_id', '=', 'users.id')
+          ->select('users.id','username', 'address_latitude', 'address_longitude','address_address','temp_ratings.average_rating AS rating'
+          , DB::raw(sprintf(
+              '(6371 * acos(cos(radians(%1$.7f)) * cos(radians(address_latitude)) * cos(radians(address_longitude) - radians(%2$.7f)) + sin(radians(%1$.7f)) * sin(radians(address_latitude)))) AS distance',
+             $request->input('serviceusers_latitude'),
+             $request->input('serviceusers_longitude')
+         ))
+      )
+          ->whereIn('users.id',$service_providers_id)
+          ->having('distance', '<', 5)
+          ->having('rating', '>', 3)
+          ->orderBy('rating', 'desc')
+         ->get();
          return new ServiceProviderSelectionCollection($location);
     }
 
@@ -167,8 +160,9 @@ class ServiceProviderSelectionController extends Controller
             }
         }
         }
-         $location = DB::table('users')
-         ->select('id','username', 'address_latitude', 'address_longitude','address_address', DB::raw(sprintf(
+        $location = DB::table('users')->join('temp_ratings', 'temp_ratings.service_provider_id', '=', 'users.id')
+          ->select('users.id','username', 'address_latitude', 'address_longitude','address_address','temp_ratings.average_rating AS rating',
+          DB::raw(sprintf(
              '(6371 * acos(cos(radians(%1$.7f)) * cos(radians(address_latitude)) * cos(radians(address_longitude) - radians(%2$.7f)) + sin(radians(%1$.7f)) * sin(radians(address_latitude)))) AS distance',
             $request->input('serviceusers_latitude'),
             $request->input('serviceusers_longitude')

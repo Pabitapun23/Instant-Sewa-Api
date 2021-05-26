@@ -22,7 +22,7 @@ class ServiceProviderSelection extends JsonResource
             'longitude' => $this->address_longitude,
             'address'=>$this->address_address,
             'distance'=>$this->distance,
-            'rate'=>ServiceProviderController::rating($this->id)
+            'rate'=>$this->rating
         ];
     }
 }

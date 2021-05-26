@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\SubCategoryCollection;
-use App\Models\SubCategory;
+use App\Http\Controllers\ServiceProviderController;
+use App\Models\RateAndReview;
+use App\Models\TempRating;
 use Illuminate\Http\Request;
 
-class SubCategoryController extends Controller
+class TempRatingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,7 @@ class SubCategoryController extends Controller
      */
     public function index()
     {
-        return new SubCategoryCollection(SubCategory::paginate(10));
+
     }
 
     /**
@@ -42,21 +43,21 @@ class SubCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SubCategory  $subCategory
+     * @param  \App\Models\TempRating  $tempRating
      * @return \Illuminate\Http\Response
      */
-    public function show(SubCategory $subCategory)
+    public function show(TempRating $tempRating)
     {
-        return $subCategory;
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\SubCategory  $subCategory
+     * @param  \App\Models\TempRating  $tempRating
      * @return \Illuminate\Http\Response
      */
-    public function edit(SubCategory $subCategory)
+    public function edit(TempRating $tempRating)
     {
         //
     }
@@ -65,10 +66,10 @@ class SubCategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SubCategory  $subCategory
+     * @param  \App\Models\TempRating  $tempRating
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SubCategory $subCategory)
+    public function update(Request $request, TempRating $tempRating)
     {
         //
     }
@@ -76,19 +77,26 @@ class SubCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SubCategory  $subCategory
+     * @param  \App\Models\TempRating  $tempRating
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SubCategory $subCategory)
+    public function destroy(TempRating $tempRating)
     {
         //
     }
-    public function subCategoryImageFinder(Request $request)
+    public static function fillData()
     {
-        $rules = [
-            'name' =>'required',
-        ];
-        $subcategories = SubCategory::select('id','image')->where('name',$request['name'])->get();
-       return $subcategories;        
-    }
+        TempRating::truncate();
+        $service_providers_id = RateAndReview::select('service_provider_id')->distinct()->pluck('service_provider_id')->toArray();
+        $count=count($service_providers_id);
+        $i=0;
+        while($count > $i)
+        {
+            $tempRating = new TempRating();
+            $tempRating->service_provider_id = $service_providers_id[$i];
+            $tempRating->average_rating = ServiceProviderController::rating($service_providers_id[$i]);
+            $tempRating->save();
+            $i++;
+        }
+        }
 }
