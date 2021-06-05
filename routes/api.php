@@ -52,6 +52,7 @@ Route::post('deviceTokenUpdate','ServiceUserUpdate@updateDeviceToken');
 Route::post('addressUpdate','ServiceUserUpdate@updateAddress');
 Route::post('phoneNoUpdate','ServiceUserUpdate@updatePhoneNo');
 Route::post('profileimageupdate','ServiceUserUpdate@updateProfilePicture');
+Route::post('profileupdate','ServiceUserUpdate@updateProfile');
 Route::post('serviceproviderselectionbydistance','ServiceProviderSelectionController@serviceProviderselectionListByDistance');
 Route::post('serviceproviderselectionbyrating','ServiceProviderSelectionController@serviceProviderselectionListByRate');
 Route::post('favserviceproviderselection','ServiceProviderSelectionController@favouriteServiceProviderselectionListByDistance');

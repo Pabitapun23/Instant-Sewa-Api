@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PushNotification;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PushNotificationController extends Controller
@@ -62,5 +63,38 @@ class PushNotificationController extends Controller
     public function destroy(PushNotification $pushNotification)
     {
         //
+    }
+     public static function sendNotification(User $user,$title,$body)
+    {
+        $firebaseToken = $user->device_token;
+          
+         $SERVER_API_KEY = 'AAAA6lphLNU:APA91bGEKIAsHdwUCpZrupnS8h-TSa06La1muEYeaVHHuNKcpMC8MF-1UOqc5U9neD2mBo_jKycDLLDpKyMcBKUWirrPcFBedwTOxDNXQnEANHzLbXTaKd9zIig9oQXd_9DHTPc5us6W';
+  
+         $data = [
+            "id" => '1',
+        //"click_action" => 'FLUTTER_NOTIFICATION_CLICK',
+            "notification" => [
+              "title" => $title,
+            "body" => $body,  
+             ]
+         ];
+        $dataString = json_encode($data);
+    
+     $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+         ];
+    
+        $ch = curl_init();
+      
+         curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+         curl_setopt($ch, CURLOPT_POST, true);
+         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+               
+         $response = curl_exec($ch);
+         return $response;
     }
 }

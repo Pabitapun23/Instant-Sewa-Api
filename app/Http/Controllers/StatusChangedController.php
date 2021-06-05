@@ -26,8 +26,13 @@ class StatusChangedController extends Controller
             DB::table('operations')->where('id', $request['operation_id'])->update(['booked_flag' => '1']);
             $operation = Operation::findOrFail($request->operation_id);
             $user = User::findOrFail($operation->service_user_id);
-            $user->notify(new OrderBooked($operation));
-            Notification::send($user, new OrderBooked($operation));
+            $title= "Order Booked";
+            $cartName = DB::table('cart_groups')->where('id', $operation->cart_collection_id)->pluck('collection_name');
+            $body = $cartName[0]." is booked.";
+           $result = PushNotificationController::sendNotification($user,$title,$body);
+            // $user->notify(new OrderBooked($operation));
+            return $result;
+            // Notification::send($user, new OrderBooked($operation));
         } else {
             DB::table('operations')->where('id', $request['operation_id'])->update(['cancel_flag' => '1']);
             $operation = Operation::findOrFail($request->operation_id);
