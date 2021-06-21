@@ -21,8 +21,8 @@ use App\Http\Controllers\PushNotificationController;
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/khalti', function () {
-    return view('khaltipayment');
+Route::get('/khalti/{cartName}/{total}', function ($cartName,$payment) {
+    return view('khaltipayment',['payment'=>$payment,'cartName'=>$cartName]);
 });
 Route::get('/', function () {
     return view('welcome');

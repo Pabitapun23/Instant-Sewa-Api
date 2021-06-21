@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CartResourceCollection;
 use App\Http\Resources\OperationResource;
 use App\Http\Resources\OperationResourceCollection;
+use App\Models\CartGroup;
 use App\Models\Operation;
 use App\Models\User;
 use App\Notifications\NewServiceBooked;
@@ -65,8 +66,11 @@ class OperationController extends Controller
         $operation->end_time  = $request->end_time;
         $operation->save();
         $user = User::findOrFail($request->service_provider_id);
-         $user->notify(new OrderCreation($operation));
-        return $operation;
+         //$user->notify(new OrderCreation($operation));
+        $title="You have new Order";
+        $orderName=CartGroup::findOrFail($request->cart_collection_id)->collection_name;
+        $body = "New Order ".$orderName." has booked you.";
+        NotificationController::send($user->device_token,$title,$body);
     }
 
     /**
