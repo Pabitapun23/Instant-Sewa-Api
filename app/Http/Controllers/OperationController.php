@@ -66,7 +66,7 @@ class OperationController extends Controller
         $operation->end_time  = $request->end_time;
         $operation->save();
         $user = User::findOrFail($request->service_provider_id);
-         //$user->notify(new OrderCreation($operation));
+         $user->notify(new OrderCreation($operation));
         $title="You have new Order";
         $orderName=CartGroup::findOrFail($request->cart_collection_id)->collection_name;
         $body = "New Order ".$orderName." has booked you.";

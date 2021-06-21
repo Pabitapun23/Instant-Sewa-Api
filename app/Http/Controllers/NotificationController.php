@@ -10,9 +10,7 @@ class NotificationController extends Controller
      public function Notify(Request $request)
     {
     	$user = User::find($request->user()->id);
-    	foreach ($user->notifications as $notification) {
-		return $notification;
-	}
+      return $user->notifications;
     }
     public static function send($device_token,$title,$body)
     {
@@ -21,7 +19,7 @@ class NotificationController extends Controller
     $serverKey = 'AAAAkmnCQwg:APA91bF190tv-jCbS9o-OtR19KL9XVMqyXNsRAXss_m0esPapEyEIQcWOIJEnqdDzx8xGLApyxZSvq0TSXq4nlGjxAc28fesb6ZQzk2E5Qcn0INh9Y-zTAxYF7mNyNdVwIDwL6b8NmYe';
     $title = $title;
     $body = $body;
-    $notification = array('title' =>$title , 'body' => $body, 'sound' => 'default', 'badge' => '1');
+    $notification = array('title' =>$title , 'body' => $body, 'click_action' => "FLUTTER_NOTIFICATION_CLICK",'sound' => 'default', 'badge' => '1');
     $arrayToSend = array('to' => $token, 'notification' => $notification,'priority'=>'high');
     $json = json_encode($arrayToSend);
     $headers = array();

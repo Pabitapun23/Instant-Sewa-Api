@@ -32,7 +32,7 @@ class StatusChangedController extends Controller
              $orderName=CartGroup::findOrFail($operation->cart_collection_id)->collection_name;
              $body = "Your Order ".$orderName." is booked.";
             NotificationController::send($user->device_token,$title,$body);
-            // $user->notify(new OrderBooked($operation));
+            $user->notify(new OrderBooked($operation));
         } else {
             DB::table('operations')->where('id', $request['operation_id'])->update(['cancel_flag' => '1']);
             $operation = Operation::findOrFail($request->operation_id);
@@ -41,7 +41,7 @@ class StatusChangedController extends Controller
         $orderName=CartGroup::findOrFail($operation->cart_collection_id)->collection_name;
         $body = "Your Order ".$orderName." is cancelled.";
         NotificationController::send($user->device_token,$title,$body);
-            //$user->notify(new OrderCancelled($operation));
+            $user->notify(new OrderCancelled($operation));
         }
     }
     public function StartFlagChanged(Request $request)
@@ -57,7 +57,7 @@ class StatusChangedController extends Controller
         $orderName=CartGroup::findOrFail($operation->cart_collection_id)->collection_name;
         $body = "Your Order ".$orderName." is starting.";
         NotificationController::send($user->device_token,$title,$body);
-        //$user->notify(new OrderStarted($operation));
+        $user->notify(new OrderStarted($operation));
     }
     public function CompletedFlagChanged(Request $request)
     {
@@ -72,7 +72,7 @@ class StatusChangedController extends Controller
         $orderName=CartGroup::findOrFail($operation->cart_collection_id)->collection_name;
         $body = "Your Order ".$orderName." payment is not recieved  .";
         NotificationController::send($user->device_token,$title,$body);
-        //$user->notify(new DuePayment($operation));
+        $user->notify(new DuePayment($operation));
     }
     public function PaymentFlagChanged(Request $request)
     {
@@ -87,6 +87,6 @@ class StatusChangedController extends Controller
         $orderName=CartGroup::findOrFail($operation->cart_collection_id)->collection_name;
         $body = "Order ".$orderName." is completed.";
         NotificationController::send($user->device_token,$title,$body);
-        //$user->notify(new TaskFinished($operation));
+        $user->notify(new TaskFinished($operation));
     }
 }
