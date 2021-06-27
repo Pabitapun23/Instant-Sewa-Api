@@ -42,9 +42,11 @@ class TaskFinished extends Notification
      */
     public function toDatabase($notifiable)
     {
+       $cart_name =TrackerController::CartCollectionName($this->operation->cart_collection_id);
         return[
-            'operation_id' => $this->operation->id,
-            'cart_name' =>TrackerController::CartCollectionName($this->operation->cart_collection_id)
+            "title" => 'Task Completed',
+            "body" => "Order ".$cart_name." is completed.",
+            
         ];
     }
 }

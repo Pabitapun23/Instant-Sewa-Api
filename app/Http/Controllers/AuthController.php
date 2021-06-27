@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\MailController;
+use App\Mail\VerifyMail;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -33,10 +34,10 @@ class AuthController extends Controller
         $user->email = $request->email;
         $user->password =  bcrypt($request->password);
     	$user->user_type = $request->user_type;
-        $user->verification_token = Str::random(8);
+        $user->verification_token = rand(10000,99999);
     	$user->save();
-        if($user == null){
-            MailController::sendSignupEmail($user->username,$user->email,$user->verification_token);
+        if($user != null){
+            Mail::to($user->email)->send(new VerifyMail($user));
          return $this->getResponse($user);
     	}
     }
@@ -85,9 +86,14 @@ private function getResponse(User $user)
 }
 public function verifyUser(Request $request)
 {
-    $verification_token = $request->code;
-    $user = User::where(['verification_token' => $verification_token])->firstorFail();
-        $user->verified = 1;
+    $validator = Validator::make($request->all(),[
+            'verification_token' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response(['errors'=>$validator->errors()],422);
+        }
+    $user = User::where(['verification_token' => $request['verification_token']])->firstorFail();
+        $user->verified = true;
         $user->verification_token = null;
 
         $user -> save();
@@ -98,10 +104,12 @@ public function verifyUser(Request $request)
 public function resend(Request $request)
 {
     $user = $request->user();
-    if($user->verified = 1)
+    if($user->verified = true)
     {
-        return  response(['error'=>'User is alreadyverified'],409);
+        return  response(['error'=>'User is already verified'],409);
     }
+    $user->verification_token = Str::random(8);
+    
      MailController::sendSignupEmail($user->username,$user->email,$user->verification_token);
  return  response(['message'=>'The account '.$user->username.' has been sent verification code in mail'],200);    
 }

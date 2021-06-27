@@ -48,10 +48,11 @@ class ServiceProviderSelectionController extends Controller
              '(6371 * acos(cos(radians(%1$.7f)) * cos(radians(address_latitude)) * cos(radians(address_longitude) - radians(%2$.7f)) + sin(radians(%1$.7f)) * sin(radians(address_latitude)))) AS distance',
             $request->input('serviceusers_latitude'),
             $request->input('serviceusers_longitude')
-        )))->whereIn('id',$service_providers_id)
+        )))->whereIn('users.id',$service_providers_id)
         ->having('distance', '<', 5)
         ->orderBy('distance', 'asc')
         ->get();
+         //return $service_providers_id;
          return new ServiceProviderSelectionCollection($location);
     }
         public function serviceProviderselectionListByRate(Request $request)

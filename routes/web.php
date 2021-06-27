@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\PushNotificationController;
+use App\Mail\NewUserNotification;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PushNotificationController;
 
 
 /*

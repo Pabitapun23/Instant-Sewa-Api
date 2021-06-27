@@ -62,7 +62,7 @@
             "eventHandler": {
                 onSuccess (payload) {
                     // hit merchant api for initiating verfication
-                    //console.log(payload);
+                    console.log(payload.status);
                     if(payload.status==200) {
                         $.ajaxSetup({
                             headers: {
@@ -96,7 +96,7 @@
         var btn = document.getElementById("payment-button");
         btn.onclick = function () {
             // minimum transaction amount must be 10, i.e 1000 in paisa.
-            checkout.show({amount: {{$payment}} });
+            checkout.show({amount: {{$payment*100}} });
         }
     </script>
     <!-- Paste this code anywhere in you body tag -->

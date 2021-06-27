@@ -28,10 +28,9 @@ class CreateUsersTable extends Migration
             $table->string('gender')->nullable();
             $table->string('avatar')->nullable();
             $table->rememberToken()->nullable();
-            $table->string('verified')->nullable();
+            $table->boolean('verified')->default(false);
             $table->string('verification_token')->nullable();
             $table->string('device_token')->nullable();
-
             $table->string('user_type')->default('user');
             $table->timestamps();
             $table->softDeletes();

@@ -23,8 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	Route::post('/login','AuthController@login');
 	Route::get('/logout','AuthController@logout')->middleware('auth:api');
 	Route::get('/user','AuthController@user')->middleware('auth:api');
-	Route::get('/verify','AuthController@verifyUser');
-	Route::post('/resend','AuthController@resend')->middleware('auth:api');
+	Route::post('/verify','AuthController@verifyUser');
+	Route::get('/resend','AuthController@resend')->middleware('auth:api');
 	Route::get('authentication-failed','AuthController@authFailed')->name('auth-failed');
 });
 Route::group(['middleware'=>'auth:api'],function(){

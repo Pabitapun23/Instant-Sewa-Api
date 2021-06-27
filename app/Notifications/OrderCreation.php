@@ -42,9 +42,11 @@ class OrderCreation extends Notification
      */
     public function toDatabase($notifiable)
     {
+        $cart_name =TrackerController::CartCollectionName($this->operation->cart_collection_id);
         return[
-            'operation_id' => $this->operation->id,
-            'cart_name' =>TrackerController::CartCollectionName($this->operation->cart_collection_id)
+            "title" => 'You have new Order',
+            "body" =>"New Order ".$cart_name." has booked you.",
+            
         ];
     }
 }
