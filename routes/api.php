@@ -29,6 +29,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::group(['middleware'=>'auth:api'],function(){
 Route::get('/notification','NotificationController@Notify');
+Route::get('/deleteMyNotification','NotificationController@deleteAllNotification');
+Route::post('/deleteNotification','NotificationController@deleteNotification');
+Route::post('/readNotification','NotificationController@readNotification');
 Route::resource('category','CategoryController');
 Route::resource('subcategory','SubCategoryController');
 Route::post('subcategoryfinder','SubCategoryController@subCategoryFinder');

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class NotificationController extends Controller
 {
@@ -11,6 +13,26 @@ class NotificationController extends Controller
     {
     	$user = User::find($request->user()->id);
       return $user->notifications;
+    }
+     public function deleteAllNotification(Request $request)
+    {
+        $notifications = Notification::where('notifiable_id',$request->user()->id)->delete();
+    }
+     public function deleteNotification(Request $request)
+    {
+        $rules = [
+            'notification_id' => 'required',
+        ];
+        $this->validate($request, $rules);
+        $notifications = Notification::where('id',$request['notification_id'])->delete();
+    }
+     public function readNotification(Request $request)
+    {
+        $rules = [
+            'notification_id' => 'required',
+        ];
+        $this->validate($request, $rules);
+        $notifications = Notification::where('id',$request['notification_id'])->update(['read_at' => Carbon::now()]);
     }
     public static function send($device_token,$title,$body)
     {
