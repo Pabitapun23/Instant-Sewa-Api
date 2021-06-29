@@ -86,12 +86,9 @@ private function getResponse(User $user)
 }
 public function verifyUser(Request $request)
 {
-    $validator = Validator::make($request->all(),[
-            'verification_token' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return response(['errors'=>$validator->errors()],422);
-        }
+     $rules = [
+            'verification_token' =>'required',
+        ];
     $user = User::where(['verification_token' => $request['verification_token']])->firstorFail();
         $user->verified = true;
         $user->verification_token = null;
