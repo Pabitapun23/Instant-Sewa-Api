@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 class ServiceUserUpdate extends Controller
 {
      public function updateDeviceToken(Request $request)
@@ -56,7 +57,7 @@ class ServiceUserUpdate extends Controller
         DB::table('users')->where('id',$request->user()->id)->update(['address_address'=>$request['address_address'],'address_latitude'=>$request['address_latitude'],'address_longitude'=>$request['address_longitude'],]);
     }
 
-        public function updatePhoneNo(Request $request)
+    public function updatePhoneNo(Request $request)
     {
     	$rules = [
             'phoneno' => 'required|string|max:255',
@@ -76,5 +77,44 @@ class ServiceUserUpdate extends Controller
             201,
             'message' => asset("images/$name") ? 'Image saved' : 'Image failed to save'
         ]);
+    }
+
+    public function employeeVerify(Request $request)
+    {
+        $rules = [
+            'id' => 'required',
+            'email' => 'required|string|max:255',
+             'category' => 'required',
+        ];
+        $this->validate($request, $rules);
+        if (DB::table('users')->where('id','=',$request['id'])->where('email','=',$request['email'])->where('user_type','=','ServiceProvider')->exists()) 
+         {
+          $subcategories = DB::table('sub_category_service_providers')->where('service_provider_id',$request['id'])->get()->pluck('subcategories_id');
+          $category = DB::table('sub_categories')->whereIn('id',$subcategories)->get()->unique('category_id')->pluck('category_id');
+          $category_name =  DB::table('categories')->whereIn('id',$category)->get()->unique('name')->pluck('name');
+          $count=count($category_name);
+          $found = 0 ;
+          for($i=0;$i<$count;$i++)
+         {
+            if($request['category'] == $category_name[$i])
+            {
+                $found++;
+            }
+         }
+         if($found == 1){
+            $user = User:: where('id', $request['id'])->get();
+         return response(
+             ['data' => $user],200);
+         }
+         else {
+            return response(
+             ['data' => 'false'],200);
+         }
+          
+        }
+         else {
+            return response(
+             ['data' => 'false'],200);
+         }
     }
 }

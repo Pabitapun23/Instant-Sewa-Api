@@ -1,7 +1,8 @@
 <?php
-  
+
 namespace App\Http\Controllers;
   
+use App\Http\Controllers\StatusChangedController;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -75,6 +76,7 @@ class PayPalController extends Controller
                     $payment->currency = env('PAYPAL_CURRENCY');
                     $payment->payment_status = $response['ACK'];
                     $payment->save();
+                    StatusChangedController::PaymentOnChanged($cartID);
                 }
             dd($response);
             dd('Your payment was successfully. You can create success page here.');
