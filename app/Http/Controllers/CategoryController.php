@@ -83,5 +83,9 @@ class CategoryController extends Controller
     {
         //
     }
-    
+    public function categoryName()
+    {
+         $categoryName = DB::table('categories')->get()->unique('name')->pluck('name');
+         return $categoryName;
+    }
 }

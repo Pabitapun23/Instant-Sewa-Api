@@ -22,4 +22,8 @@ class SearchController extends Controller
             'subcategory'=>$subcategory,
     		'service'=>$service],200);
 }
+ public function test()
+    {
+        return "test";
+}
 }

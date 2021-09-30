@@ -13,7 +13,6 @@ public function verification(Request $request) {
     $amount = $reqeust->amount;
     $khalti = new Khalti();
     $response = $khalti->verifyPayment($secret,$token,$amount);
-
     dd($response);
 
 }

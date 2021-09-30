@@ -90,17 +90,22 @@ class StatusChangedController extends Controller
         $user->notify(new TaskFinished($operation));
     }
 
-    public static function PaymentOnChanged($cart_id)
+    public static function PaymentOnChanged($cart_id, $amount)
     {
         
         DB::table('operations')->where('cart_collection_id', $id)->update(['payment_flag' => '1']);
         $operation_id = DB::table('operations')->where('cart_collection_id', $id)->get()->unique('id')->pluck('id');
         $operation = Operation::findOrFail($operation_id);
+        $service_provider_id = DB::table('operations')->where('id',$operation_id)->get()->unique('service_provider_id')->pluck('service_provider_id');
+        $payment = DB::table('transactions')->where('service_provider_id',$service_provider_id)->get()->unique('payment')->pluck('payment');
+        $payment = $payment + $amount - 0.02 * $amount;
+        DB::table('transactions')->where('service_provider_id',$service_provider_id)->update(['payment'=>$payment]);
         $user = User::findOrFail($operation->service_user_id);
         $title="Task Completed";
         $orderName=CartGroup::findOrFail($operation->cart_collection_id)->collection_name;
         $body = "Order ".$orderName." is completed.";
         NotificationController::send($user->device_token,$title,$body);
         $user->notify(new TaskFinished($operation));
+
     }
 }

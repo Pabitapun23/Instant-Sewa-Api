@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Mail\VerifyMail;
+use App\Models\Transaction;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -36,10 +37,15 @@ class AuthController extends Controller
     	$user->user_type = $request->user_type;
         $user->verification_token = rand(10000,99999);
     	$user->save();
+        if($user->user_type == "ServiceProvider"){
+            $transaction = new  Transaction();
+            $transaction->service_provider_id = $user->id;
+            $transaction->save();
+        }
         if($user != null){
             Mail::to($user->email)->send(new VerifyMail($user));
-         return $this->getResponse($user);
     	}
+         return $this->getResponse($user);
     }
   public function login(Request $request)
     {
