@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Lookups\Category;
 use App\Http\Requests\CategoryStore;
 use App\Http\Resources\Lookups\CategoryCollection;
-
+use Illuminate\Support\Facades\DB;
 class CategoryController extends Controller
 {
     /**
