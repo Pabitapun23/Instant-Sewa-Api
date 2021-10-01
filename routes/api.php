@@ -33,6 +33,7 @@ Route::get('/deleteMyNotification','NotificationController@deleteAllNotification
 Route::post('/deleteNotification','NotificationController@deleteNotification');
 Route::post('/readNotification','NotificationController@readNotification');
 Route::resource('category','CategoryController');
+Route::resource('feedback','FeedbackController');
 Route::get('categoryName','CategoryController@categoryName');
 Route::resource('subcategory','SubCategoryController');
 Route::post('subcategoryfinder','SubCategoryController@subCategoryFinder');

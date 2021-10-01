@@ -102,9 +102,8 @@ class ServiceUserUpdate extends Controller
             }
          }
          if($found == 1){
-            $user = User:: where('id', $request['id'])->get();
          return response(
-             ['data' => $user],200);
+             ['data' => $request['id']],200);
          }
          else {
             return response(
