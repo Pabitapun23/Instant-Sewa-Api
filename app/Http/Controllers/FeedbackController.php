@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\NotificationController;
 use App\Models\Feedback;
 use App\Notifications\FeedBackRegister;
+use App\User;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
@@ -31,11 +32,10 @@ class FeedbackController extends Controller
         $feedback->feedback = $request['feedback'];
         $feedback->user_id = $request->user()->id;
         $feedback->save();
-        $title = 'Order Cancelled';
+        $title = "Feedback Register";
         $body = "Your FeedBack  is register.";
-        NotificationController::send($request->user()->device_token,$title,$body);
-        $request->user()->notify(new FeedBackRegister());
-        return $feedback;
+        $user = User::findOrFail($request->user()->id);
+        NotificationController::send($user->device_token,$title,$body);
     }
 
     /**

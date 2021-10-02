@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('search','SearchController@Search');
+Route::get('test/{cartid}/{amount}','StatusChangedController@PaymentOnChanged');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

@@ -27,6 +27,8 @@ class OperationResource extends JsonResource
             'startTime' =>(string)$this->start_time,
             'endTime' =>(string)$this->end_time,
             'status' => TrackerController::Status($this->id),
+            'latitude' =>(string)$this->address_latitude,
+            'longitude' =>(string)$this->address_longitude,
             'creationDate' => (string)$this->created_at,
             'lastChange' => (string)$this->updated_at,
             'deletedDate' => isset($this->deleted_at) ? (string) $this->deleted_at : null,

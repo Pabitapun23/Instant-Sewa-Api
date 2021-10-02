@@ -157,20 +157,24 @@ class ServiceProviderSelectionController extends Controller
          for($j=0;$j<$list_count2;$j++)
          {
             if($service_providers_id[$i]==$free_service_providers[$j]){
-                unset($service_providers_id[$i]);;
+                unset($service_providers_id[$i]);
             }
         }
         }
-        $location = DB::table('users')->join('temp_ratings', 'temp_ratings.service_provider_id', '=', 'users.id')
-          ->select('users.id','username', 'address_latitude', 'address_longitude','address_address','temp_ratings.average_rating AS rating',
-          DB::raw(sprintf(
-             '(6371 * acos(cos(radians(%1$.7f)) * cos(radians(address_latitude)) * cos(radians(address_longitude) - radians(%2$.7f)) + sin(radians(%1$.7f)) * sin(radians(address_latitude)))) AS distance',
-            $request->input('serviceusers_latitude'),
-            $request->input('serviceusers_longitude')
-        )))->whereIn('id',$service_providers_id)
-        ->having('distance', '<', 5)
-        ->orderBy('distance', 'asc')
-        ->get();
+         $provider = DB::table('users')->whereIn('id',$service_providers_id)->get()->pluck('id');
+          $location = DB::table('users')->join('temp_ratings', 'temp_ratings.service_provider_id', '=', 'users.id')
+          ->select('users.id','username', 'address_latitude', 'address_longitude','address_address','temp_ratings.average_rating AS rating'
+          , DB::raw(sprintf(
+              '(6371 * acos(cos(radians(%1$.7f)) * cos(radians(address_latitude)) * cos(radians(address_longitude) - radians(%2$.7f)) + sin(radians(%1$.7f)) * sin(radians(address_latitude)))) AS distance',
+             $request->input('serviceusers_latitude'),
+             $request->input('serviceusers_longitude')
+         ))
+      )
+          ->whereIn('users.id',$service_providers_id)
+          ->having('distance', '<', 5)
+          ->having('rating', '>', 3)
+          ->orderBy('rating', 'desc')
+         ->get();
          return new ServiceProviderSelectionCollection($location);
     }
     public function rateasc($service_providers_id)

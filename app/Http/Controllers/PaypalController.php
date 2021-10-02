@@ -76,9 +76,10 @@ class PayPalController extends Controller
                     $payment->currency = env('PAYPAL_CURRENCY');
                     $payment->payment_status = $response['ACK'];
                     $payment->save();
-                    StatusChangedController::PaymentOnChanged($cartID, $amount);
                 }
-            dd($response);
+            // dd($response);
+            $cartID= DB::table('cart_groups')->select('id')->where('collection_name', $response['L_NAME0'])->first();
+            StatusChangedController::PaymentOnChanged($cartID, $response['L_AMT0']);
             dd('Your payment was successfully. You can create success page here.');
         }
   

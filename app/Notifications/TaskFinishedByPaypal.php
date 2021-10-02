@@ -2,12 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Http\Controllers\TrackerController;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class FeedBackRegister extends Notification
+class TaskFinishedByPaypal extends Notification
 {
     use Queueable;
 
@@ -16,9 +17,9 @@ class FeedBackRegister extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($operation)
     {
-        //
+        $this->operation = $operation;
     }
 
     /**
@@ -32,24 +33,19 @@ class FeedBackRegister extends Notification
         return ['database'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    
+
     /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
      * @return array
      */
-   public function toDatabase($notifiable)
+    public function toDatabase($notifiable)
     {
+       $cart_name =TrackerController::CartCollectionName($this->operation[0]->cart_collection_id);
         return[
-            "title" => "Feedback Register",
-            "body" => "Your FeedBack  is register.",
+            "title" => 'Task Completed',
+            "body" => "Order ".$cart_name." is completed.",
             
         ];
     }
