@@ -15,7 +15,7 @@ class CreateCartGroupsTable extends Migration
     {
         Schema::create('cart_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('collection_name')->nullable();
+            $table->string('collection_name',10)->nullable();
             $table->timestamps();
         });
     }

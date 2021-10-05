@@ -75,6 +75,7 @@ class PayPalController extends Controller
                     $payment->amount = $response['L_AMT0'];
                     $payment->currency = env('PAYPAL_CURRENCY');
                     $payment->payment_status = $response['ACK'];
+                    $payment->platform = 'Paypal';
                     $payment->save();
                 }
             // dd($response);

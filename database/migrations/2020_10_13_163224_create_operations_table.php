@@ -27,6 +27,7 @@ class CreateOperationsTable extends Migration
            $table->boolean('completed_flag')->default(0);
            $table->boolean('payment_flag')->default(0);
            $table->boolean('cancel_flag')->default(0);
+           $table->boolean('pay_by_cash_flag')->default(0);
            $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->timestamp('completed_time')->nullable();

@@ -60,6 +60,7 @@ Route::post('phoneNoUpdate','ServiceUserUpdate@updatePhoneNo');
 Route::post('profileimageupdate','ServiceUserUpdate@updateProfilePicture');
 Route::post('employeeVerify','ServiceUserUpdate@employeeVerify');
 Route::post('profileupdate','ServiceUserUpdate@updateProfile');
+Route::post('cashpayment','StatusChangedController@CashFlagChanged');
 Route::post('serviceproviderselectionbydistance','ServiceProviderSelectionController@serviceProviderselectionListByDistance');
 Route::post('serviceproviderselectionbyrating','ServiceProviderSelectionController@serviceProviderselectionListByRate');
 Route::post('favserviceproviderselection','ServiceProviderSelectionController@favouriteServiceProviderselectionListByDistance');
