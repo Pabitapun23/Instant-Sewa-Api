@@ -42,7 +42,7 @@ class CashPayment extends Notification
      */
     public function toDatabase($notifiable)
     {
-        $cart_name =TrackerController::CartCollectionName($this->operation->cart_collection_id);
+        $cart_name =TrackerController::CartCollectionName($this->operation[0]->cart_collection_id);
         return[
             "title" => 'CashPayment',
             "body" => "Your Order ".$cart_name." payment is recieved by cash?",
