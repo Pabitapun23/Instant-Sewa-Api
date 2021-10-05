@@ -132,15 +132,16 @@ class StatusChangedController extends Controller
             'cart_name' => 'required',
         ];
         $this->validate($request, $rules);
-        $cartID= DB::table('cart_groups')->select('id')->where('collection_name', $request['cart_name'])->first();
-        DB::table('operations')->where('cart_collection_id', $cart_id->id)->update(['payment_flag' => '1']);
-         $operation_id = DB::table('operations')->where('cart_collection_id', $cart_id->id)->get()->unique('id')->pluck('id');
-         $operation = Operation::findOrFail($operation_id);
-         $user = User::findOrFail($operation->service_user_id);
+        $cartId= DB::table('cart_groups')->select('id')->where('collection_name', $request['cart_name'])->first();
+        DB::table('operations')->where('cart_collection_id', $cartId->id)->update(['payment_flag' => '1']);
+        $operation_id = DB::table('operations')->where('cart_collection_id', $cartId->id)->get()->unique('id')->pluck('id');
+        $operation = Operation::findOrFail($operation_id);
+        $user = User::findOrFail($operation->service_user_id);
         $title="CashPayment";
         $orderName=CartGroup::findOrFail($operation->cart_collection_id)->collection_name;
         $body = "Your Order ".$orderName." payment is recieved by cash?";
         NotificationController::send($user->device_token,$title,$body);
         $user->notify(new CashPayment($operation));
+        return $operation;
     }
 }
