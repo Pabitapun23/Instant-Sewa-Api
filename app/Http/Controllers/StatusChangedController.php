@@ -8,10 +8,12 @@ use App\Models\Operation;
 use App\Models\Payment;
 use App\Models\User;
 use App\Notifications\CashPayment;
+use App\Notifications\CashPaymentCancelled;
 use App\Notifications\DuePayment;
 use App\Notifications\OrderBooked;
 use App\Notifications\OrderCancelled;
 use App\Notifications\OrderStarted;
+use App\Notifications\RechargeCompleted;
 use App\Notifications\TaskFinished;
 use App\Notifications\TaskFinishedByPaypal;
 use Illuminate\Http\Request;
@@ -84,10 +86,12 @@ class StatusChangedController extends Controller
         $rules = [
             'operation_id' => 'required',
             'total_amount' => 'required',
+            'status' =>'required',
         ];
         $this->validate($request, $rules);
         $operation = Operation::findOrFail($request->operation_id);
         $user = User::findOrFail($operation->service_user_id);
+        if($request['status']=='1'){
         $payment = new Payment;
         $payment->payment_id =  Str::random(10);
         $payment->payer_id = $operation->service_user_id;
@@ -102,12 +106,23 @@ class StatusChangedController extends Controller
          $paymentcost = DB::table('transactions')->where('service_provider_id',$operation->service_provider_id)->get()->unique('payment')->pluck('payment');
            $new_payment = floatval($paymentcost[0]) - 0.02 * floatval( $payment->amount );
           DB::table('transactions')->where('service_provider_id',$operation->service_provider_id)->update(['payment'=>$new_payment]);
+          DB::table('operations')->where('id', $request['operation_id'])->update(['pay_by_cash_flag' => '0']);
         $title="Task Completed";
         $orderName=CartGroup::findOrFail($operation->cart_collection_id)->collection_name;
         $body = "Order ".$orderName." is completed.";
         NotificationController::send($user->device_token,$title,$body);
         $user->notify(new TaskFinished($operation));
     }
+    else{
+         DB::table('operations')->where('id', $request['operation_id'])->update(['pay_by_cash_flag' => '0']);
+          $title="Cash Request Cancelled";
+        $orderName=CartGroup::findOrFail($operation->cart_collection_id)->collection_name;
+        $body = "Order ".$orderName."'s cash request Cancelled by user";
+        NotificationController::send($user->device_token,$title,$body);
+        $user->notify(new CashPaymentCancelled($operation));
+
+    }
+}
 
     public static function PaymentOnChanged($cart_id, $amount)
     {
@@ -126,6 +141,18 @@ class StatusChangedController extends Controller
          $user->notify(new TaskFinishedByPaypal($operation));
     }
 
+
+public static function RechargeAmount($userid, $amount)
+    {
+          $payment = DB::table('transactions')->where('service_provider_id',$userid)->get()->unique('payment')->pluck('payment');
+           $new_payment = floatval($payment[0]) + floatval( $amount );
+          DB::table('transactions')->where('service_provider_id',$userid)->update(['payment'=>$new_payment]);
+         $user = User::findOrFail($userid);
+        $title="Recharge Completed";
+        $body = "Recharge ".$amount." is completed.";
+         NotificationController::send($user->device_token,$title,$body);
+         $user->notify(new RechargeCompleted($amount));
+    }
     public function CashFlagChanged(Request $request)
     {
         $rules = [

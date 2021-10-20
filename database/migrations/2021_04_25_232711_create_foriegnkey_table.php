@@ -57,7 +57,7 @@ class CreateForiegnkeyTable extends Migration
 
          });
                Schema::table('payments', function($table) {
-             $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade')->onUpdate('cascade');
+             $table->foreign('cart_id')->references('id')->on('cart_groups')->onDelete('cascade')->onUpdate('cascade');
 
          });
        

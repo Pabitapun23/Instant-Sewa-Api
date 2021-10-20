@@ -21,7 +21,7 @@ class PayPalController extends Controller
             [
                 'name' => $cartName,
                 'price' => $total,
-                'desc'  => 'Description for ItSolutionStuff.com',
+                'desc'  => 'Description for Cart',
                 'qty' => 1
             ]
         ];

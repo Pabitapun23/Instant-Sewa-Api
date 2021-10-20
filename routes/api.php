@@ -77,4 +77,5 @@ Route::post('completedstatuschanged','StatusChangedController@CompletedFlagChang
 Route::post('paymentstatuschanged','StatusChangedController@PaymentFlagChanged');
 Route::resource('serviceChooser','SubCategoryServiceProviderController');
 Route::post('serviceChecker','SubCategoryServiceProviderController@ServiceCount');
+Route::get('transactionamount','TransactionController@AmountFinder');
 });
