@@ -20,6 +20,8 @@ class OngoingTracker extends JsonResource
             'cartGroupName'=>TrackerController::CartCollectionName($this->cart_collection_id),
             'startTime' => (string)$this->start_time,
             'status' => TrackerController::Status($this->id),
+            'latitude' =>(string)$this->address_latitude,
+            'longitude' =>(string)$this->address_longitude,
         ];
     }
 }
