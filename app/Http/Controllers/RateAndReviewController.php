@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RateAndReview;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class RateAndReviewController extends Controller
 {
     /**
@@ -37,18 +37,22 @@ class RateAndReviewController extends Controller
     {
         $rules = [
             'rating' =>'required',
-            'service_provider_id' => 'required',
-            'service_user_id' => 'required',
+            'service_provider_id' => 'required'
         ];
-
-       $this->validate($request, $rules);
-         $rateAndReview = new RateAndReview();
+        $this->validate($request, $rules);
+        if (DB::table('rate_and_reviews')->where('service_user_id','=',$request->user()->id)->where('service_provider_id','=',$request['service_provider_id'])->exists())
+        {
+            $id = DB::table('rate_and_reviews')->where('service_user_id','=',$request->user()->id)->where('service_provider_id','=',$request['service_provider_id'])->get()->pluck('id');;
+            DB::table('rate_and_reviews')->where('id', $id)->update(['rating' => $request['rating']]);
+        }
+        else{
+       $rateAndReview = new RateAndReview();
        $rateAndReview->rating  = $request->rating;
        $rateAndReview->service_provider_id  = $request->service_provider_id;
-       $rateAndReview->service_user_id  = $request->service_user_id;
-      $rateAndReview->save();
-        return $rateAndReview;
-        
+       $rateAndReview->service_user_id  = $request->user()->id;
+       $rateAndReview->save();
+       return $rateAndReview;
+    }
     }
 
     /**
@@ -94,5 +98,26 @@ class RateAndReviewController extends Controller
     public function destroy(RateAndReview $rateAndReview)
     {
         //
+    }
+        public function reviewStore(Request $request)
+    {
+        $rules = [
+            'review' =>'required',
+            'service_provider_id' => 'required'
+        ];
+        $this->validate($request, $rules);
+        if (DB::table('rate_and_reviews')->where('service_user_id','=',$request->user()->id)->where('service_provider_id','=',$request['service_provider_id'])->exists())
+        {
+            $id = DB::table('rate_and_reviews')->where('service_user_id','=',$request->user()->id)->where('service_provider_id','=',$request['service_provider_id'])->get()->pluck('id');;
+            DB::table('rate_and_reviews')->where('id', $id)->update(['reviews' => $request['review']]);
+        }
+        else{
+       $rateAndReview = new RateAndReview();
+       $rateAndReview->reviews  = $request->review;
+       $rateAndReview->service_provider_id  = $request->service_provider_id;
+       $rateAndReview->service_user_id  = $request->user()->id;
+       $rateAndReview->save();
+       return $rateAndReview;
+    }
     }
 }
