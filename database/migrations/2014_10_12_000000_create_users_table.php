@@ -29,6 +29,8 @@ class CreateUsersTable extends Migration
             $table->string('avatar')->nullable();
             $table->rememberToken()->nullable();
             $table->boolean('verified')->default(false);
+            $table->boolean('block_status')->default(false);
+            $table->BigInteger('block_amount')->default(0);
             $table->string('verification_token')->nullable();
             $table->string('device_token')->nullable();
             $table->string('user_type')->default('user');
