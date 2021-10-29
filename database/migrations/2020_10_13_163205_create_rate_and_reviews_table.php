@@ -16,7 +16,7 @@ class CreateRateAndReviewsTable extends Migration
     {
         Schema::create('rate_and_reviews', function (Blueprint $table) {
             $table->id();
-            $table->float('rating')->nullable();
+            $table->float('rating')->default(0.0);
             $table->string('reviews')->nullable();
             $table->BigInteger('service_provider_id')->unsigned();
            $table->BigInteger('service_user_id')->unsigned();

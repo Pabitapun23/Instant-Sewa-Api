@@ -24,13 +24,13 @@ class ServiceProviderSelectionController extends Controller
             'startDate' =>'required',
             'endDate' =>'required',
         ];
-        $this->validate($request, $rules);
+         $this->validate($request, $rules);
     TempRatingController::fillData();
-        $start = Carbon::parse($request->startDate);
-        $end = Carbon::parse($request->endDate);
-        $subcategory_id = DB::table('sub_categories')->where('name', $request['subcategories_name'])->get()->pluck('id');
-        $service_providers_id = DB::table('sub_category_service_providers')->where('subcategories_id',$subcategory_id)->get()->pluck('service_provider_id');
-         $free_service_providers = DB::table('operations')->whereBetween('start_time', [$start, $end])->whereBetween('end_time', [$start, $end])->get()->pluck('service_provider_id');
+         $start = Carbon::parse($request->startDate);
+         $end = Carbon::parse($request->endDate);
+         $subcategory_id = DB::table('sub_categories')->where('name', $request['subcategories_name'])->get()->pluck('id');
+         $service_providers_id = DB::table('sub_category_service_providers')->where('subcategories_id',$subcategory_id)->get()->pluck('service_provider_id');
+          $free_service_providers = DB::table('operations')->whereBetween('start_time', [$start, $end])->whereBetween('end_time', [$start, $end])->get()->pluck('service_provider_id');
          $list_count=count($service_providers_id);
          $list_count2=count($free_service_providers);
          for($i=0;$i<$list_count;$i++)
@@ -42,6 +42,26 @@ class ServiceProviderSelectionController extends Controller
             }
         }
         }
+
+        $list_count=count($service_providers_id);
+         for($j=0;$j<$list_count;$j++)
+         {
+             if(ServiceProviderSelectionController::BlockStatus($service_providers_id[$j])){
+                unset($service_providers_id[$j]);
+             }
+         }
+    $provider = DB::table('users')->whereIn('id',$service_providers_id)->get()->pluck('id');
+    $service_providers_id = $provider;
+     $list_count=count($service_providers_id);
+          for($k=0;$k<$list_count;$k++)
+          {
+              if(ServiceProviderSelectionController::TransactionAmount($service_providers_id[$k]))
+            {
+                unset($service_providers_id[$k]);
+              }
+          }
+
+
         $location = DB::table('users')->join('temp_ratings', 'temp_ratings.service_provider_id', '=', 'users.id')
           ->select('users.id','username', 'address_latitude', 'address_longitude','address_address','temp_ratings.average_rating AS rating',
            DB::raw(sprintf(
@@ -52,7 +72,7 @@ class ServiceProviderSelectionController extends Controller
         ->having('distance', '<', 5)
         ->orderBy('distance', 'asc')
         ->get();
-         //return $service_providers_id;
+        // return $service_providers_id;
          return new ServiceProviderSelectionCollection($location);
     }
         public function serviceProviderselectionListByRate(Request $request)
@@ -83,7 +103,23 @@ class ServiceProviderSelectionController extends Controller
             }
         }
         }
-         $provider = DB::table('users')->whereIn('id',$service_providers_id)->get()->pluck('id');
+        $list_count=count($service_providers_id);
+         for($j=0;$j<$list_count;$j++)
+         {
+             if(ServiceProviderSelectionController::BlockStatus($service_providers_id[$j])){
+                unset($service_providers_id[$j]);
+             }
+         }
+    $provider = DB::table('users')->whereIn('id',$service_providers_id)->get()->pluck('id');
+    $service_providers_id = $provider;
+     $list_count=count($service_providers_id);
+          for($k=0;$k<$list_count;$k++)
+          {
+              if(ServiceProviderSelectionController::TransactionAmount($service_providers_id[$k]))
+            {
+                unset($service_providers_id[$k]);
+              }
+          }
           $location = DB::table('users')->join('temp_ratings', 'temp_ratings.service_provider_id', '=', 'users.id')
           ->select('users.id','username', 'address_latitude', 'address_longitude','address_address','temp_ratings.average_rating AS rating'
           , DB::raw(sprintf(
@@ -161,6 +197,23 @@ class ServiceProviderSelectionController extends Controller
             }
         }
         }
+        $list_count=count($service_providers_id);
+         for($j=0;$j<$list_count;$j++)
+         {
+             if(ServiceProviderSelectionController::BlockStatus($service_providers_id[$j])){
+                unset($service_providers_id[$j]);
+             }
+         }
+    $provider = DB::table('users')->whereIn('id',$service_providers_id)->get()->pluck('id');
+    $service_providers_id = $provider;
+     $list_count=count($service_providers_id);
+          for($k=0;$k<$list_count;$k++)
+          {
+              if(ServiceProviderSelectionController::TransactionAmount($service_providers_id[$k]))
+            {
+                unset($service_providers_id[$k]);
+              }
+          }
          $provider = DB::table('users')->whereIn('id',$service_providers_id)->get()->pluck('id');
           $location = DB::table('users')->join('temp_ratings', 'temp_ratings.service_provider_id', '=', 'users.id')
           ->select('users.id','username', 'address_latitude', 'address_longitude','address_address','temp_ratings.average_rating AS rating'
@@ -177,8 +230,21 @@ class ServiceProviderSelectionController extends Controller
          ->get();
          return new ServiceProviderSelectionCollection($location);
     }
-    public function rateasc($service_providers_id)
+    public static  function  BlockStatus($id)
     {
+      $block_status = DB::table('users')->where('id', $id)->get()->pluck('block_status');
+        return $block_status[0];
+    }
+
+    public static  function  TransactionAmount($id)
+    {
+      $payment = DB::table('transactions')->where('service_provider_id', $id)->get()->pluck('payment');
+      if($payment[0]<0){
+        return true;
+      }
+      else{
+        return false;
+      }
 
     }
 

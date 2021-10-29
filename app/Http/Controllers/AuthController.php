@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\VerifyMail;
+use App\Models\RateAndReview;
 use App\Models\Transaction;
 use App\User;
 use Carbon\Carbon;
@@ -41,6 +42,11 @@ class AuthController extends Controller
             $transaction = new  Transaction();
             $transaction->service_provider_id = $user->id;
             $transaction->save();
+            $rateAndReview = new RateAndReview();
+            $rateAndReview->rating  = 3.5;
+            $rateAndReview->service_provider_id  = $user->id;
+            $rateAndReview->service_user_id  = 1;
+            $rateAndReview->save();
         }
         if($user != null){
             Mail::to($user->email)->send(new VerifyMail($user));
