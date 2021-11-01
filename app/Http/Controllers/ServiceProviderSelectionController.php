@@ -63,7 +63,7 @@ class ServiceProviderSelectionController extends Controller
 
 
         $location = DB::table('users')->join('temp_ratings', 'temp_ratings.service_provider_id', '=', 'users.id')
-          ->select('users.id','username', 'address_latitude', 'address_longitude','address_address','temp_ratings.average_rating AS rating',
+          ->select('users.id','username', 'address_latitude', 'address_longitude','avatar','address_address','temp_ratings.average_rating AS rating',
            DB::raw(sprintf(
              '(6371 * acos(cos(radians(%1$.7f)) * cos(radians(address_latitude)) * cos(radians(address_longitude) - radians(%2$.7f)) + sin(radians(%1$.7f)) * sin(radians(address_latitude)))) AS distance',
             $request->input('serviceusers_latitude'),
@@ -121,7 +121,7 @@ class ServiceProviderSelectionController extends Controller
               }
           }
           $location = DB::table('users')->join('temp_ratings', 'temp_ratings.service_provider_id', '=', 'users.id')
-          ->select('users.id','username', 'address_latitude', 'address_longitude','address_address','temp_ratings.average_rating AS rating'
+          ->select('users.id','username', 'address_latitude','avatar', 'address_longitude','address_address','temp_ratings.average_rating AS rating'
           , DB::raw(sprintf(
               '(6371 * acos(cos(radians(%1$.7f)) * cos(radians(address_latitude)) * cos(radians(address_longitude) - radians(%2$.7f)) + sin(radians(%1$.7f)) * sin(radians(address_latitude)))) AS distance',
              $request->input('serviceusers_latitude'),
@@ -216,7 +216,7 @@ class ServiceProviderSelectionController extends Controller
           }
          $provider = DB::table('users')->whereIn('id',$service_providers_id)->get()->pluck('id');
           $location = DB::table('users')->join('temp_ratings', 'temp_ratings.service_provider_id', '=', 'users.id')
-          ->select('users.id','username', 'address_latitude', 'address_longitude','address_address','temp_ratings.average_rating AS rating'
+          ->select('users.id','username', 'address_latitude','avatar', 'address_longitude','address_address','temp_ratings.average_rating AS rating'
           , DB::raw(sprintf(
               '(6371 * acos(cos(radians(%1$.7f)) * cos(radians(address_latitude)) * cos(radians(address_longitude) - radians(%2$.7f)) + sin(radians(%1$.7f)) * sin(radians(address_latitude)))) AS distance',
              $request->input('serviceusers_latitude'),

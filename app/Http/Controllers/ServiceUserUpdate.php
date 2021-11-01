@@ -72,11 +72,7 @@ class ServiceUserUpdate extends Controller
             $request->file('image')->move(public_path('img'), $name);
         }
         DB::table('users')->where('id',$request->user()->id)->update(['avatar'=>$name]);
-        return response()->json([
-            asset("images/$name"),
-            201,
-            'message' => asset("images/$name") ? 'Image saved' : 'Image failed to save'
-        ]);
+        return $name;
     }
 
     public function employeeVerify(Request $request)

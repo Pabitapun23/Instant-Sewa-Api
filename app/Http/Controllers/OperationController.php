@@ -124,6 +124,12 @@ class OperationController extends Controller
 
         return $serviceProviderName->username;
     }
+        public static function serviceProviderImage($id)
+    {
+        $serviceProviderName = DB::table('users')->select('avatar')->where('id', $id)->first();
+
+        return $serviceProviderName->avatar;
+    }
     public static function CartDetails($id)
     {
         $cartDetails = DB::table('carts')->where('cart_collection_id', $id)->get();

@@ -22,7 +22,8 @@ class ServiceProviderSelection extends JsonResource
             'longitude' => $this->address_longitude,
             'address'=>$this->address_address,
             'distance'=>$this->distance,
-            'rate'=>$this->rating
+            'rate'=>$this->rating,
+            'avatar'=>$this->avatar
         ];
     }
 }

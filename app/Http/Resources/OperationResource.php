@@ -26,6 +26,8 @@ class OperationResource extends JsonResource
             'completedTime'=>(string)$this->completed_time,
             'startTime' =>(string)$this->start_time,
             'endTime' =>(string)$this->end_time,
+            'serviceProviderAvatar'=>OperationController::serviceProviderImage($this->service_provider_id),
+            'serviceUserAvatar'=>OperationController::serviceProviderImage($this->service_user_id),
             'cash_pay' =>(string)$this->pay_by_cash_flag,
             'status' => TrackerController::Status($this->id),
             'latitude' =>(string)$this->address_latitude,
