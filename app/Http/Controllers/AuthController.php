@@ -45,6 +45,7 @@ class AuthController extends Controller
             $rateAndReview = new RateAndReview();
             $rateAndReview->rating  = 3.5;
             $rateAndReview->service_provider_id  = $user->id;
+            $rateAndReview->reviews  = 'Good Luck';
             $rateAndReview->service_user_id  = 1;
             $rateAndReview->save();
         }
