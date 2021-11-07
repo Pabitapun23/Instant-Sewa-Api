@@ -99,7 +99,7 @@ class StatusChangedController extends Controller
         $payment->cart_id=$operation->cart_collection_id;
         $payment->amount = $request->total_amount;
         $payment->currency = 'Nrs.';
-        $payment->payment_status = 'Sucess';
+        $payment->payment_status = 'SUCCESS';
         $payment->platform = 'Cash';
         $payment->save();
         DB::table('operations')->where('id', $request['operation_id'])->update(['payment_flag' => '1']);
