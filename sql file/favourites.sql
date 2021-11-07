@@ -1,0 +1,83 @@
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Nov 07, 2021 at 06:21 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 7.4.24
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `instantsewa`
+--
+
+--
+-- Dumping data for table `favourites`
+--
+
+INSERT INTO `favourites` (`id`, `service_provider_id`, `service_user_id`, `created_at`, `updated_at`) VALUES
+(2, 3, 1, '2021-10-25 16:24:14', '2021-10-25 16:24:14'),
+(3, 12, 1, '2021-11-06 03:07:10', '2021-11-06 03:07:10'),
+(4, 53, 13, NULL, NULL),
+(5, 46, 35, NULL, NULL),
+(6, 45, 26, NULL, NULL),
+(7, 41, 35, NULL, NULL),
+(8, 41, 23, NULL, NULL),
+(9, 42, 36, NULL, NULL),
+(10, 41, 19, NULL, NULL),
+(11, 49, 35, NULL, NULL),
+(12, 41, 13, NULL, NULL),
+(13, 51, 15, NULL, NULL),
+(14, 53, 20, NULL, NULL),
+(16, 44, 14, NULL, NULL),
+(18, 51, 30, NULL, NULL),
+(19, 46, 20, NULL, NULL),
+(20, 48, 20, NULL, NULL),
+(21, 48, 13, NULL, NULL),
+(22, 39, 20, NULL, NULL),
+(23, 47, 21, NULL, NULL),
+(24, 47, 31, NULL, NULL),
+(25, 40, 14, NULL, NULL),
+(26, 44, 18, NULL, NULL),
+(27, 44, 15, NULL, NULL),
+(28, 49, 19, NULL, NULL),
+(29, 50, 38, NULL, NULL),
+(30, 39, 18, NULL, NULL),
+(31, 49, 21, NULL, NULL),
+(32, 50, 31, NULL, NULL),
+(33, 45, 21, NULL, NULL),
+(34, 45, 14, NULL, NULL),
+(35, 51, 32, NULL, NULL),
+(36, 52, 35, NULL, NULL),
+(37, 42, 28, NULL, NULL),
+(38, 50, 20, NULL, NULL),
+(39, 40, 31, NULL, NULL),
+(40, 48, 15, NULL, NULL),
+(41, 40, 26, NULL, NULL),
+(42, 39, 13, NULL, NULL),
+(43, 43, 33, NULL, NULL),
+(44, 52, 36, NULL, NULL),
+(45, 47, 22, NULL, NULL),
+(46, 51, 16, NULL, NULL),
+(47, 53, 16, NULL, NULL),
+(48, 46, 37, NULL, NULL),
+(49, 43, 19, NULL, NULL),
+(50, 52, 34, NULL, NULL),
+(51, 46, 14, NULL, NULL),
+(52, 47, 37, NULL, NULL),
+(53, 50, 30, NULL, NULL);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
